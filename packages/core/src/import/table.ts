@@ -164,6 +164,10 @@ export function buildTable(options: BuildOptions): BuildResult {
 
   body.forEach((cells, index) => {
     const line = firstDataLine + index;
+    if (cells.every((cell) => cell.trim() === "")) {
+      rejected.push({ line, raw: cells.join(";"), reason: "empty-line" });
+      return;
+    }
     if (cells.length !== columns.length) {
       rejected.push({
         line,

@@ -1,13 +1,16 @@
 import { useMemo, useState } from "react";
+import type { ReactNode } from "react";
 import type { Column, Row } from "@bare-bones/core";
 import { computeWindow } from "./virtual.js";
 
 export interface GridProps {
   readonly columns: readonly Column[];
   readonly rows: readonly Row[];
-  readonly rowHeight?: number | undefined | undefined;
-  readonly height?: number | undefined | undefined;
-  readonly caption?: string | undefined | undefined;
+  readonly rowHeight?: number | undefined;
+  readonly height?: number | undefined;
+  readonly caption?: string | undefined;
+  /** Optional cell renderer: apps use it to draw their own chips and badges. */
+  readonly renderCell?: ((column: Column, row: Row) => ReactNode) | undefined;
 }
 
 function formatCell(value: unknown, column: Column): string {
@@ -32,6 +35,7 @@ export function VirtualGrid({
   rowHeight = 34,
   height = 420,
   caption,
+  renderCell,
 }: GridProps) {
   const [scrollTop, setScrollTop] = useState(0);
 
@@ -62,6 +66,7 @@ export function VirtualGrid({
             {columns.map((column) => (
               <th key={column.id} scope="col">
                 {column.label}
+                <small>{column.type}</small>
               </th>
             ))}
           </tr>
@@ -70,7 +75,11 @@ export function VirtualGrid({
           {visible.map((row, offset) => (
             <tr key={view.startIndex + offset}>
               {columns.map((column) => (
-                <td key={column.id}>{formatCell(row[column.id], column)}</td>
+                <td key={column.id}>
+                  {renderCell === undefined
+                    ? formatCell(row[column.id], column)
+                    : renderCell(column, row)}
+                </td>
               ))}
             </tr>
           ))}

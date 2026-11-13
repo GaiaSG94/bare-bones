@@ -35,7 +35,7 @@ for (const area of ["apps", "skeleton", "site"]) {
       console.error(`${rel}: imports an internal path of core/ui (public API only)`);
       failed = true;
     }
-    if (DANGEROOUS_HTML.test(text)) {
+    if (DANGEROUS_HTML.test(text)) {
       console.error(`${rel}: uses dangerouslySetInnerHTML (forbidden)`);
       failed = true;
     }

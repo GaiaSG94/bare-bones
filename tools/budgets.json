@@ -2,8 +2,6 @@
   "packages/core/src": 3300,
   "packages/ui/src": 4400,
   "skeleton/src": 300,
-  "apps/nonprofit-budget/src": 600,
   "apps/nonprofit-budget": 600,
-  "apps/club-results/src": 600,
   "apps/club-results": 600
 }
