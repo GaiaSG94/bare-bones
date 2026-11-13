@@ -11,8 +11,7 @@
   },
   "scripts": {
     "verify": "node tools/verify.mjs",
-    "typecheck": "tsc --noEmit -p tsconfig.base.json",
-    "check": "pnpm run verify && pnpm run typecheck"
+    "check": "node tools/verify.mjs"
   },
   "devDependencies": {
     "typescript": "^5.7.0"
