@@ -1,0 +1,36 @@
+{
+  "measuredAt": "2026-11-13T20:40:31.997Z",
+  "packages": {
+    "core": {
+      "lines": 1493,
+      "ceiling": 3300
+    },
+    "ui": {
+      "lines": 0,
+      "ceiling": 4400
+    },
+    "skeleton": {
+      "lines": 0,
+      "ceiling": 300
+    }
+  },
+  "tests": {
+    "files": 5,
+    "cases": 39,
+    "pbtProperties": 8,
+    "pbtSeed": 20261111
+  },
+  "runtimeDependencies": [
+    "zod",
+    "react",
+    "react-dom"
+  ],
+  "siteSizes": {
+    "home": null,
+    "budget": null,
+    "club": null,
+    "note": "measured at first build (step 7)"
+  },
+  "ciDurationSeconds": null,
+  "ciNote": "measured via the GitHub API at step 7"
+}

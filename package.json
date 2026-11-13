@@ -6,14 +6,23 @@
   "license": "MIT",
   "type": "module",
   "packageManager": "pnpm@10.0.0",
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
+  },
   "engines": {
     "node": ">=20.19"
   },
   "scripts": {
     "verify": "node tools/verify.mjs",
-    "check": "node tools/verify.mjs"
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p packages/core/tsconfig.json",
+    "budget": "node tools/budget.mjs",
+    "guard": "node tools/guard.mjs",
+    "check": "node tools/verify.mjs && node node_modules/typescript/bin/tsc --noEmit -p packages/core/tsconfig.json && vitest run && node tools/budget.mjs && node tools/guard.mjs"
   },
   "devDependencies": {
-    "typescript": "^5.7.0"
+    "fast-check": "^3.23.2",
+    "typescript": "^5.7.3",
+    "vitest": "^3.2.4"
   }
 }
