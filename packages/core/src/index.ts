@@ -81,6 +81,7 @@ export {
   validateConfig,
 } from "./config/config.js";
 export { createTranslator, withFallbacks } from "./i18n/translator.js";
+export type { Translator } from "./i18n/translator.js";
 
 export {
   SHARE_PREFIX,

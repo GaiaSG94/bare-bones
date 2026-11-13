@@ -60,6 +60,45 @@ Zod schemas for every boundary payload: `tableSchema`, `viewStateSchema`,
 `querySchema`, `sharePayloadSchema`, `columnSchema`, `columnTypeSchema`,
 `columnFormatSchema`.
 
+## `@bare-bones/ui`
+
+### Theme
+
+`ThemeProvider`, `useBbTheme`, `DEFAULT_THEME`, `themeToCssVars`.
+
+### Layout
+
+`PageShell`, `Sidebar`.
+
+### Grid
+
+`VirtualGrid`, `computeWindow`.
+
+### Filters
+
+`FilterPanel`.
+
+### Charts
+
+`Chart` (dispatcher), `ChartFrame`, `BarChart`, `LineChart`,
+`DistributionChart`, `FormChart`, `DeltaBarChart`, `BubbleChart`,
+`binValues`, `formatNumber`, `pointsToText`, `extent`, `paddedExtent`,
+`scaleLinear`, `ticks`.
+
+### Share
+
+`ShareCard`, `useShareLink`, `useHashToken`.
+
+### Explorer
+
+`Explorer`, `useExplorer`, `DropZone`, `MetricCards`, `RejectedRows`,
+`buildChartData`.
+
+### Styles
+
+`@bare-bones/ui/styles.css` — the base stylesheet. It only references CSS
+custom properties, never hardcoded colors.
+
 ## Link format
 
 ```

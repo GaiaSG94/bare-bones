@@ -15,10 +15,10 @@
   "scripts": {
     "verify": "node tools/verify.mjs",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit -p packages/core/tsconfig.json",
+    "typecheck": "node node_modules/typescript/bin/tsc --noEmit -p packages/core/tsconfig.json && node node_modules/typescript/bin/tsc --noEmit -p packages/ui/tsconfig.json",
     "budget": "node tools/budget.mjs",
     "guard": "node tools/guard.mjs",
-    "check": "node tools/verify.mjs && node node_modules/typescript/bin/tsc --noEmit -p packages/core/tsconfig.json && vitest run && node tools/budget.mjs && node tools/guard.mjs"
+    "check": "node tools/verify.mjs && node node_modules/typescript/bin/tsc --noEmit -p packages/core/tsconfig.json && node node_modules/typescript/bin/tsc --noEmit -p packages/ui/tsconfig.json && vitest run && node tools/budget.mjs && node tools/guard.mjs"
   },
   "devDependencies": {
     "fast-check": "^3.23.2",

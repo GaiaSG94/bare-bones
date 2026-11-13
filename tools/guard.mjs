@@ -10,7 +10,8 @@ import { join, dirname, resolve, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const INTERNAL_IMPORT = /@bare-bones\/(core|ui)\/(?!$)/;
+// Subpath imports are forbidden, except the published CSS and the worker entry.
+const INTERNAL_IMPORT = /@bare-bones\/(core|ui)\/(?!styles\.css|worker)/;
 const DANGEROUS_HTML = /dangerouslySetInnerHTML/;
 
 function listFiles(dir) {

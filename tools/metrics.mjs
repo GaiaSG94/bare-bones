@@ -42,15 +42,18 @@ function countPattern(files, regex) {
 }
 
 const coreSrc = join(root, "packages/core/src");
-const testFiles = walk(coreSrc).filter((f) => f.endsWith(".test.ts"));
+const packageSrcs = ["packages/core/src", "packages/ui/src", "skeleton/src", "apps/nonprofit-budget/src", "apps/club-results/src"];
+const testFiles = packageSrcs
+  .flatMap((dir) => walk(join(root, dir)))
+  .filter((f) => f.endsWith(".test.ts") || f.endsWith(".test.tsx"));
 const sourceFiles = walk(coreSrc).filter((f) => f.endsWith(".ts") && !f.endsWith(".test.ts"));
 
 const metrics = {
   measuredAt: new Date().toISOString(),
   packages: {
     core: { lines: countLines(coreSrc), ceiling: 3300 },
-    ui: { lines: countLines(join(root, "packages/ui")), ceiling: 4400 },
-    skeleton: { lines: countLines(join(root, "skeleton")), ceiling: 300 },
+    ui: { lines: countLines(join(root, "packages/ui/src")), ceiling: 4400 },
+    skeleton: { lines: countLines(join(root, "skeleton/src")), ceiling: 300 },
   },
   tests: {
     files: testFiles.length,

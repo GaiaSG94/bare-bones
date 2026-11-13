@@ -1,12 +1,12 @@
 {
-  "measuredAt": "2026-11-13T20:40:31.997Z",
+  "measuredAt": "2026-11-13T21:40:10.362Z",
   "packages": {
     "core": {
-      "lines": 1493,
+      "lines": 1494,
       "ceiling": 3300
     },
     "ui": {
-      "lines": 0,
+      "lines": 1808,
       "ceiling": 4400
     },
     "skeleton": {
@@ -15,9 +15,9 @@
     }
   },
   "tests": {
-    "files": 5,
-    "cases": 39,
-    "pbtProperties": 8,
+    "files": 9,
+    "cases": 54,
+    "pbtProperties": 11,
     "pbtSeed": 20261111
   },
   "runtimeDependencies": [
