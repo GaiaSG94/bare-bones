@@ -1,0 +1,20 @@
+{
+  "name": "bare-bones",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Drop a spreadsheet. Share an explorer. A skeleton for in-browser data explorers.",
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@10.0.0",
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "verify": "node tools/verify.mjs",
+    "typecheck": "tsc --noEmit -p tsconfig.base.json",
+    "check": "pnpm run verify && pnpm run typecheck"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  }
+}

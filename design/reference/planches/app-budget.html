@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fern Street Budget · Orb</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+<style>
+/* Orb, version aboutie : l'app budget plein écran. Blanc cassé, sphères granuleuses = catégories, chiffres calmes. */
+:root {
+  --bg: #F4F3F0; --card: #FFFFFF; --soft: #F4F3F0; --soft-2: #EDEBE7;
+  --ink: #141414; --ink-2: rgba(20,20,20,.62); --ink-3: rgba(20,20,20,.42); --line: rgba(20,20,20,.07); --line-2: rgba(20,20,20,.13);
+  --pos: #1E8A5A; --neg: #D4512A;
+  --o-act: radial-gradient(circle at 32% 28%, #FFE3C8 0, #F58A5A 38%, #E0573A 70%, #B8402E);
+  --o-evt: radial-gradient(circle at 32% 28%, #F6DDFF 0, #B77BF0 40%, #7B4BD1 78%, #5A35A8);
+  --o-pre: radial-gradient(circle at 32% 28%, #D9EBFF 0, #7FA8F0 42%, #4D74D6 80%);
+  --o-fix: radial-gradient(circle at 32% 28%, #F3F1EC 0, #C9C4BA 45%, #9C968B 85%);
+  --o-gra: radial-gradient(circle at 32% 28%, #E1F7E9 0, #7FD3A6 42%, #2FA472 82%);
+  --o-due: radial-gradient(circle at 32% 28%, #FFF4C9 0, #F4D06A 42%, #D9A62A 85%);
+  --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+* { box-sizing: border-box; margin: 0; }
+html, body { width: 1600px; height: 1000px; overflow: hidden; }
+body { font-family: Inter, sans-serif; background: #E9E7E2; color: var(--ink); -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }
+.orb { border-radius: 50%; position: relative; overflow: hidden; flex: none; }
+.orb::after { content: ""; position: absolute; inset: 0; background-image: var(--noise); mix-blend-mode: overlay; opacity: .55; border-radius: 50%; }
+i.orb { display: inline-block; }
+.mono { font-family: "Geist Mono", monospace; }
+.cap { font: 500 10.5px/1 "Geist Mono", monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }
+
+.backdrop { position: absolute; inset: 0; overflow: hidden; }
+.backdrop .orb { position: absolute; }
+.win { position: absolute; left: 60px; top: 50px; width: 1480px; height: 900px; background: var(--bg); border-radius: 26px; overflow: hidden; box-shadow: 0 60px 120px -50px rgba(40,30,20,.45), 0 0 0 1px rgba(20,20,20,.06); display: grid; grid-template-columns: 232px 1fr 340px; }
+
+/* barre latérale */
+.nav { padding: 26px 18px; display: flex; flex-direction: column; gap: 6px; border-right: 1px solid var(--line); }
+.brand { display: flex; align-items: center; gap: 11px; padding: 0 8px 22px; }
+.brand b { font: 600 15px/1.1 Inter; letter-spacing: -.01em; }
+.brand small { display: block; font: 400 11.5px/1.3 Inter; color: var(--ink-3); }
+.nav a { display: flex; align-items: center; gap: 11px; padding: 10px 12px; border-radius: 12px; font: 500 13.5px/1 Inter; color: var(--ink-2); text-decoration: none; }
+.nav a.on { background: var(--card); color: var(--ink); box-shadow: 0 1px 2px rgba(20,20,20,.06), 0 0 0 1px var(--line); }
+.nav a svg { width: 17px; height: 17px; }
+.nav a .n { margin-left: auto; font: 500 11px/1 "Geist Mono"; padding: 4px 7px; border-radius: 99px; background: #FBE3D9; color: var(--neg); }
+.nav .sp { flex: 1; }
+.nav .made { padding: 14px 12px; border-radius: 14px; background: var(--card); box-shadow: 0 0 0 1px var(--line); font: 400 12px/1.45 Inter; color: var(--ink-2); }
+.nav .made b { display: block; font: 600 12.5px/1.2 Inter; color: var(--ink); margin-bottom: 4px; }
+
+/* centre */
+.main { padding: 26px 30px; display: flex; flex-direction: column; gap: 20px; min-width: 0; overflow: hidden; }
+.top { display: flex; align-items: center; gap: 14px; }
+.seg { display: flex; padding: 4px; border-radius: 99px; background: var(--soft-2); }
+.seg span { padding: 8px 15px; border-radius: 99px; font: 500 13px/1 Inter; color: var(--ink-2); }
+.seg span.on { background: var(--card); color: var(--ink); box-shadow: 0 1px 3px rgba(20,20,20,.1); }
+.search { flex: 1; max-width: 340px; display: flex; align-items: center; gap: 9px; padding: 10px 14px; border-radius: 99px; background: var(--card); box-shadow: 0 0 0 1px var(--line); font: 400 13px/1 Inter; color: var(--ink-3); }
+.top .grow { flex: 1; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 17px; border-radius: 99px; font: 500 13px/1 Inter; }
+.btn.dark { background: var(--ink); color: #fff; }
+.btn.ghost { background: var(--card); box-shadow: 0 0 0 1px var(--line-2); }
+
+.hero { display: grid; grid-template-columns: 1.35fr 1fr 1fr; gap: 14px; }
+.big { position: relative; padding: 24px 26px; border-radius: 22px; background: var(--card); box-shadow: 0 0 0 1px var(--line); overflow: hidden; min-height: 196px; }
+.big > *:not(.orb), .share > *:not(.orb) { position: relative; z-index: 1; }
+.big .orb { position: absolute; right: -90px; top: -110px; width: 230px; height: 230px; background: radial-gradient(circle at 34% 30%, #E8FFF1 0, #8FE0B4 30%, #3CB383 60%, #2E7FA8 88%); opacity: .95; }
+.big h1 { margin-top: 14px; font: 300 64px/1 Inter; letter-spacing: -.05em; }
+.big h1 small { font-size: .42em; letter-spacing: -.02em; color: var(--ink-3); margin-left: 6px; }
+.big p { margin-top: 12px; font: 400 14px/1.45 Inter; color: var(--ink-2); max-width: 300px; }
+.big p em { font: italic 400 1.15em/1 "Instrument Serif"; color: var(--ink); }
+.kpi { padding: 22px; border-radius: 22px; background: var(--card); box-shadow: 0 0 0 1px var(--line); display: flex; flex-direction: column; }
+.kpi .row1 { display: flex; align-items: center; gap: 10px; }
+.kpi .row1 .orb { width: 26px; height: 26px; }
+.kpi b { margin-top: auto; font: 400 36px/1 Inter; letter-spacing: -.04em; }
+.kpi .sub { margin-top: 10px; display: flex; align-items: center; gap: 8px; font: 400 12.5px/1.3 Inter; color: var(--ink-2); }
+.kpi .sub i { font-style: normal; font: 500 11px/1 "Geist Mono"; padding: 4px 7px; border-radius: 99px; }
+.kpi .sub i.up { background: #DDF3E6; color: var(--pos); } .kpi .sub i.dn { background: #FBE3D9; color: var(--neg); }
+
+.mid { display: grid; grid-template-columns: 1fr 1.25fr; gap: 14px; }
+.panel { padding: 20px 22px; border-radius: 22px; background: var(--card); box-shadow: 0 0 0 1px var(--line); position: relative; }
+.panel .hd { display: flex; align-items: baseline; justify-content: space-between; }
+.panel h3 { font: 500 16px/1.2 Inter; letter-spacing: -.015em; }
+.bubbles { position: relative; height: 196px; margin-top: 8px; }
+.bubbles .orb { position: absolute; display: grid; place-items: center; box-shadow: 0 18px 30px -18px rgba(40,20,10,.5); }
+.bubbles .lab { position: absolute; font: 500 11.5px/1.25 Inter; color: var(--ink); white-space: nowrap; }
+.bubbles .lab span { display: block; font: 400 11px/1.2 "Geist Mono"; color: var(--ink-3); }
+.legend { display: flex; gap: 16px; font: 400 12px/1 Inter; color: var(--ink-2); }
+.legend i { display: inline-block; width: 18px; height: 3px; border-radius: 3px; background: var(--ink); vertical-align: middle; margin-right: 6px; }
+.legend i.pl { background: none; border-top: 2px dashed #B9B4AB; height: 0; }
+
+.tabl { padding: 6px 8px 8px; border-radius: 22px; background: var(--card); box-shadow: 0 0 0 1px var(--line); }
+.chips { display: flex; align-items: center; gap: 7px; padding: 12px 14px 10px; }
+.chips span { display: inline-flex; align-items: center; gap: 7px; padding: 7px 11px 7px 8px; border-radius: 99px; font: 500 12.5px/1 Inter; background: var(--soft); color: var(--ink-2); }
+.chips span .orb { width: 14px; height: 14px; }
+.chips span.on { background: var(--ink); color: #fff; }
+.chips .x { margin-left: auto; font: 400 12.5px/1 Inter; color: var(--ink-3); padding: 0; background: none; }
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; padding: 8px 14px; font: 500 12px/1 Inter; color: var(--ink-3); border-bottom: 1px solid var(--line); }
+th small { margin-left: 6px; font: 500 9.5px/1 "Geist Mono"; letter-spacing: .06em; text-transform: uppercase; padding: 3px 6px; border-radius: 99px; background: var(--soft); color: var(--ink-3); }
+td { padding: 11px 14px; font: 400 13.5px/1.2 Inter; border-bottom: 1px solid var(--line); }
+tr:last-child td { border-bottom: 0; }
+td.d { font: 400 12.5px/1 "Geist Mono"; color: var(--ink-2); }
+td.c span { display: inline-flex; align-items: center; gap: 7px; font: 500 12.5px/1 Inter; }
+td.c .orb { width: 12px; height: 12px; }
+td.n { text-align: right; font: 400 14px/1 Inter; letter-spacing: -.01em; }
+td.n.neg { color: var(--neg); } td.n.pos { color: var(--pos); }
+th.r { text-align: right; }
+
+/* colonne droite */
+.side { padding: 26px 24px 26px 0; display: flex; flex-direction: column; gap: 14px; }
+.share { position: relative; padding: 22px; border-radius: 22px; background: #141414; color: #F4F3F0; overflow: hidden; }
+.share .orb { position: absolute; right: -70px; top: -80px; width: 170px; height: 170px; background: radial-gradient(circle at 35% 30%, #FFE1C7 0, #F58A5A 34%, #C65AA8 64%, #7B4BD1 88%); }
+.share .cap { color: rgba(244,243,240,.5); }
+.share h3 { margin-top: 12px; font: 400 26px/1.08 Inter; letter-spacing: -.035em; }
+.share h3 em { font: italic 400 1.15em/1 "Instrument Serif"; }
+.share p { margin-top: 10px; font: 400 13px/1.5 Inter; color: rgba(244,243,240,.68); max-width: 230px; position: relative; }
+.share .link { position: relative; margin-top: 16px; display: flex; align-items: center; gap: 8px; padding: 8px 8px 8px 14px; border-radius: 99px; background: rgba(244,243,240,.1); font: 400 11.5px/1 "Geist Mono"; color: rgba(244,243,240,.75); }
+.share .link em { font-style: normal; color: #FFB38F; }
+.share .link b { margin-left: auto; padding: 8px 12px; border-radius: 99px; background: #F4F3F0; color: #141414; font: 500 12px/1 Inter; }
+.share .modes { position: relative; display: flex; gap: 6px; margin-top: 14px; }
+.share .modes span { font: 500 11.5px/1 Inter; padding: 7px 10px; border-radius: 99px; border: 1px solid rgba(244,243,240,.2); color: rgba(244,243,240,.7); }
+.share .modes span.on { background: #F4F3F0; color: #141414; border-color: transparent; }
+.rej { padding: 18px 20px; border-radius: 22px; background: var(--card); box-shadow: 0 0 0 1px var(--line); }
+.rej h4 { display: flex; align-items: center; gap: 8px; font: 500 14.5px/1.2 Inter; }
+.rej h4 i { font-style: normal; font: 500 11px/1 "Geist Mono"; padding: 4px 7px; border-radius: 99px; background: #FBE3D9; color: var(--neg); }
+.rej .r { margin-top: 12px; padding: 11px 12px; border-radius: 14px; background: var(--soft); font: 400 12px/1.4 "Geist Mono"; color: var(--ink-2); }
+.rej .r b { display: block; font: 500 12px/1.3 Inter; color: var(--neg); margin-top: 5px; }
+.plan { padding: 18px 20px; border-radius: 22px; background: var(--card); box-shadow: 0 0 0 1px var(--line); flex: 1; }
+.bar { margin-top: 13px; }
+.bar .t { display: flex; justify-content: space-between; font: 400 12.5px/1 Inter; color: var(--ink-2); }
+.bar .t b { font-weight: 500; color: var(--ink); }
+.bar .tr { position: relative; height: 8px; border-radius: 8px; background: var(--soft-2); margin-top: 7px; overflow: hidden; }
+.bar .tr i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 8px; }
+.bar .tr u { position: absolute; top: -2px; bottom: -2px; width: 2px; background: var(--ink); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="backdrop">
+  <div class="orb" style="left:-120px;top:620px;width:420px;height:420px;background:radial-gradient(circle at 40% 35%,#E8F3EC,#A9D8C0 45%,#7FB3D9 80%)"></div>
+  <div class="orb" style="right:-140px;top:-160px;width:460px;height:460px;background:radial-gradient(circle at 35% 30%,#FFE1C7 0,#F58A5A 34%,#C65AA8 62%,#7B4BD1 86%)"></div>
+</div>
+<div class="win">
+  <aside class="nav">
+    <div class="brand"><div class="orb" style="width:34px;height:34px;background:var(--o-act)"></div><div><b>Fern Street</b><small>Residents' association</small></div></div>
+    <a class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8"/><path d="M12 4v8l5 5"/></svg>Overview</a>
+    <a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 7h16M4 12h16M4 17h10"/></svg>Transactions</a>
+    <a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="8" cy="9" r="4"/><circle cx="16" cy="15" r="5"/></svg>Categories</a>
+    <a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 19 19 5M8 5h11v11"/></svg>Actual vs plan</a>
+    <a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8"/><path d="M12 8v5M12 16h.01"/></svg>Rejected rows<span class="n">2</span></a>
+    <div class="sp"></div>
+    <div class="made"><b>Your data stays here</b>The file was read in this browser. Nothing was uploaded.</div>
+  </aside>
+
+  <section class="main">
+    <div class="top">
+      <div class="seg"><span>2025</span><span class="on">2026</span></div>
+      <div class="search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>Search transactions</div>
+      <span class="grow"></span>
+      <span class="btn ghost">Import CSV</span>
+    </div>
+
+    <div class="hero">
+      <div class="big"><div class="orb"></div><span class="cap">Balance · financial year 2026</span><h1>+€3,165<small>left</small></h1><p>Spending is <em>3.1% under</em> the plan voted at the general meeting.</p></div>
+      <div class="kpi"><div class="row1"><div class="orb" style="background:var(--o-gra)"></div><span class="cap">Came in</span></div><b>€12,480</b><div class="sub"><i class="up">+8%</i>vs 2025, grants and dues</div></div>
+      <div class="kpi"><div class="row1"><div class="orb" style="background:var(--o-act)"></div><span class="cap">Went out</span></div><b>€9,315</b><div class="sub"><i class="dn">−3.1%</i>below plan</div></div>
+    </div>
+
+    <div class="mid">
+      <div class="panel">
+        <div class="hd"><h3>Where the money went</h3><span class="cap">Size = amount</span></div>
+        <div class="bubbles">
+          <div class="orb" style="left:0;top:14px;width:132px;height:132px;background:var(--o-act)"></div><div class="lab" style="left:22px;top:154px">Activities<span>€3,410</span></div>
+          <div class="orb" style="left:140px;top:0;width:100px;height:100px;background:var(--o-evt)"></div><div class="lab" style="left:248px;top:24px">Events<span>€2,380</span></div>
+          <div class="orb" style="left:146px;top:110px;width:66px;height:66px;background:var(--o-pre)"></div><div class="lab" style="left:144px;top:182px">Premises<span>€1,520</span></div>
+          <div class="orb" style="left:236px;top:84px;width:48px;height:48px;background:var(--o-fix)"></div><div class="lab" style="left:290px;top:92px">Fixed<span>€1,180</span></div>
+          <div class="orb" style="left:242px;top:144px;width:32px;height:32px;background:var(--o-due)"></div><div class="lab" style="left:282px;top:148px">Other<span>€825</span></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="hd"><h3>Monthly spending</h3><div class="legend"><span><i></i>actual</span><span><i class="pl"></i>planned</span></div></div>
+        <svg viewBox="0 0 520 190" style="width:100%;height:200px;margin-top:6px" id="ch"></svg>
+      </div>
+    </div>
+
+    <div class="tabl">
+      <div class="chips"><span class="on">All</span><span><i class="orb" style="background:var(--o-act)"></i>Activities</span><span><i class="orb" style="background:var(--o-evt)"></i>Events</span><span><i class="orb" style="background:var(--o-gra)"></i>Grants</span><span>Amount −€500 to +€3,000</span><span class="x">Clear filters</span></div>
+      <table>
+        <thead><tr><th>Date<small>date</small></th><th>Label<small>text</small></th><th>Category<small>category</small></th><th class="r">Amount<small>number</small></th></tr></thead>
+        <tbody>
+          <tr><td class="d">2026-03-19</td><td>Neighbourhood party</td><td class="c"><span><i class="orb" style="background:var(--o-evt)"></i>Events</span></td><td class="n neg">−€640.00</td></tr>
+          <tr><td class="d">2026-03-02</td><td>Insurance</td><td class="c"><span><i class="orb" style="background:var(--o-fix)"></i>Fixed costs</span></td><td class="n neg">−€212.40</td></tr>
+          <tr><td class="d">2026-02-11</td><td>Workshop supplies</td><td class="c"><span><i class="orb" style="background:var(--o-act)"></i>Activities</span></td><td class="n neg">−€145.90</td></tr>
+          <tr><td class="d">2026-02-03</td><td>City grant</td><td class="c"><span><i class="orb" style="background:var(--o-gra)"></i>Grants</span></td><td class="n pos">+€2,500.00</td></tr>
+          <tr><td class="d">2026-01-15</td><td>Hall rent</td><td class="c"><span><i class="orb" style="background:var(--o-pre)"></i>Premises</span></td><td class="n neg">−€380.00</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <aside class="side">
+    <div class="share">
+      <div class="orb"></div>
+      <span class="cap">Share with members</span>
+      <h3>One link, <em>the same view.</em></h3>
+      <p>Encrypted in this browser with AES-GCM-256. The key stays inside the link: no server ever sees it.</p>
+      <div class="modes"><span class="on">Private · encrypted</span><span>Public · view only</span></div>
+      <div class="link">…/budget/<em>#bb=k9Qe7…</em><b>Copy</b></div>
+    </div>
+    <div class="rej">
+      <h4>Rejected rows <i>2</i></h4>
+      <div class="r">";;;"<b>Empty row, skipped</b></div>
+      <div class="r">"31/02/2026;Raffle;95"<b>Date does not exist</b></div>
+    </div>
+    <div class="plan">
+      <h4 style="font:500 14.5px/1.2 Inter">Actual vs plan</h4>
+      <div class="bar"><div class="t"><span>Activities</span><b>€3,410 / €3,600</b></div><div class="tr"><i style="width:84%;background:var(--o-act)"></i><u style="left:89%"></u></div></div>
+      <div class="bar"><div class="t"><span>Events</span><b>€2,380 / €2,200</b></div><div class="tr"><i style="width:96%;background:var(--o-evt)"></i><u style="left:89%"></u></div></div>
+      <div class="bar"><div class="t"><span>Premises</span><b>€1,520 / €1,600</b></div><div class="tr"><i style="width:84%;background:var(--o-pre)"></i><u style="left:89%"></u></div></div>
+      <div class="bar"><div class="t"><span>Fixed costs</span><b>€1,180 / €1,250</b></div><div class="tr"><i style="width:84%;background:var(--o-fix)"></i><u style="left:89%"></u></div></div>
+      <div class="bar"><div class="t"><span>Other</span><b>€825 / €960</b></div><div class="tr"><i style="width:76%;background:var(--o-due)"></i><u style="left:89%"></u></div></div>
+      <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--line);display:flex;justify-content:space-between;font:400 13px/1 Inter;color:var(--ink-2)"><span>Total</span><b style="font-weight:500;color:var(--ink)">€9,315 / €9,610</b></div>
+    </div>
+  </aside>
+</div>
+<script>
+const act = [1180, 1520, 1610, 1340, 1890, 1775], plan = [1300, 1400, 1500, 1500, 1700, 1800], m = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+const W = 520, H = 170, max = 2100, bw = 44, gap = (W - 40 - 6 * bw) / 6, X0 = 40;
+const fills = ['#F58A5A', '#B77BF0', '#7FA8F0', '#7FD3A6', '#F58A5A', '#C9C4BA'];
+let s = '<defs><linearGradient id="gb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#141414"/><stop offset="1" stop-color="#141414" stop-opacity=".75"/></linearGradient></defs>';
+[0, 700, 1400, 2100].forEach((g) => { const y = H - (g / max) * (H - 10); s += `<line x1="0" x2="${W}" y1="${y}" y2="${y}" stroke="rgba(20,20,20,.06)"/><text x="0" y="${y - 4}" font-size="10" font-family="Geist Mono" fill="rgba(20,20,20,.35)">${g ? '€' + g.toLocaleString('en') : ''}</text>`; });
+act.forEach((a, i) => { const h = (a / max) * (H - 10); const x = X0 + gap / 2 + i * (bw + gap); s += `<rect x="${x}" y="${H - h}" width="${bw}" height="${h}" rx="14" fill="${i === 4 ? '#141414' : '#E7E4DE'}"/>`; s += `<text x="${x + bw / 2}" y="${H + 16}" text-anchor="middle" font-size="11" font-family="Inter" fill="rgba(20,20,20,.45)">${m[i]}</text>`; if (i === 4) s += `<text x="${x + bw / 2}" y="${H - h - 8}" text-anchor="middle" font-size="11.5" font-family="Inter" font-weight="500" fill="#141414">€1,890</text>`; });
+const pts = plan.map((p, i) => `${X0 + gap / 2 + i * (bw + gap) + bw / 2},${H - (p / max) * (H - 10)}`).join(' ');
+s += `<polyline points="${pts}" fill="none" stroke="#B9B4AB" stroke-width="2" stroke-dasharray="5 5" stroke-linecap="round"/>`;
+plan.forEach((p, i) => { s += `<circle cx="${X0 + gap / 2 + i * (bw + gap) + bw / 2}" cy="${H - (p / max) * (H - 10)}" r="3.2" fill="#fff" stroke="#B9B4AB" stroke-width="1.6"/>`; });
+document.getElementById('ch').innerHTML = s;
+</script>
+</body>
+</html>

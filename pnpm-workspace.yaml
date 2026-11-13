@@ -1,0 +1,6 @@
+packages:
+  - packages/*
+  - skeleton
+  - apps/*
+  - site
+  - create-bare-bones

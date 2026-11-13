@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bare Bones · App directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Une planche 16:9 par direction : à gauche le parti pris, à droite les deux apps (budget sur ordinateur, club sur téléphone). */
+:root { --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+* { box-sizing: border-box; margin: 0; }
+html, body { width: 1600px; height: 900px; overflow: hidden; }
+body { font-family: var(--f-body); background: var(--bg); color: var(--fg); -webkit-font-smoothing: antialiased; }
+.board { position: relative; width: 1600px; height: 900px; overflow: hidden; background: var(--bg); isolation: isolate; }
+.decor { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.grain { position: absolute; inset: 0; z-index: 1; background-image: var(--noise); opacity: var(--grain, .18); mix-blend-mode: overlay; pointer-events: none; }
+
+/* ---------- colonne de gauche : le parti pris ---------- */
+.side { position: absolute; z-index: 3; left: 64px; top: 64px; bottom: 64px; width: 470px; display: flex; flex-direction: column; }
+.tag { display: flex; align-items: center; gap: 12px; font: 500 12px/1 var(--f-mono); letter-spacing: .16em; text-transform: uppercase; color: var(--fg-3); }
+.tag b { color: var(--acc); font-weight: 600; }
+.side h1 { margin-top: 26px; font: var(--h1); letter-spacing: var(--h1-ls, -.04em); color: var(--fg); text-wrap: balance; }
+.side h1 em { font: var(--em); color: var(--em-c, var(--acc)); }
+.side .pitch { margin-top: 18px; font: 400 16px/1.55 var(--f-body); color: var(--fg-2); max-width: 420px; text-wrap: pretty; }
+.fit { margin-top: 26px; display: grid; gap: 12px; }
+.fit div { display: grid; grid-template-columns: 84px 1fr; gap: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+.fit .k { font: 500 11px/1.4 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--fg-3); }
+.fit p { font: 400 14px/1.5 var(--f-body); color: var(--fg); }
+.kit { margin-top: auto; display: grid; gap: 14px; }
+.sw { display: flex; gap: 8px; }
+.sw i { width: 44px; height: 44px; border-radius: var(--sw-r, 50%); background: var(--c); box-shadow: 0 0 0 1px var(--line); }
+.type { display: flex; gap: 22px; align-items: baseline; color: var(--fg-2); font: 400 13px/1.3 var(--f-mono); }
+.type b { font: var(--type-a); color: var(--fg); }
+.insp { font: 400 12px/1.4 var(--f-mono); color: var(--fg-3); letter-spacing: .02em; }
+
+/* ---------- scène des deux apps ---------- */
+.stage { position: absolute; z-index: 2; left: 520px; right: 0; top: 0; bottom: 0; perspective: 2200px; }
+.desk { position: absolute; left: 60px; top: 120px; width: 900px; height: 590px; transform: rotateY(-13deg) rotateX(5deg) rotateZ(.4deg); transform-origin: 70% 50%; border-radius: var(--win-r, 14px); overflow: hidden; background: var(--app-bg); color: var(--app-fg); box-shadow: var(--win-sh, 0 60px 120px -40px rgba(0,0,0,.55)); border: 1px solid var(--app-line); font-family: var(--f-body); }
+.phone { position: absolute; left: 700px; top: 260px; width: 300px; height: 610px; transform: rotateY(-10deg) rotateX(4deg) translateZ(120px); border-radius: 44px; padding: 10px; background: var(--ph-body, #0B0C0F); box-shadow: 0 70px 120px -40px rgba(0,0,0,.6), inset 0 0 0 1.5px rgba(255,255,255,.12); }
+.phone .scr { width: 100%; height: 100%; border-radius: 35px; overflow: hidden; background: var(--club-bg); color: var(--club-fg); position: relative; font-family: var(--f-club, var(--f-body)); }
+.phone .notch { position: absolute; left: 50%; top: 10px; width: 92px; height: 26px; border-radius: 20px; background: #000; transform: translateX(-50%); z-index: 5; }
+.caption { position: absolute; z-index: 3; font: 500 11px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--fg-3); }
+
+/* barre de fenêtre */
+.chrome { display: flex; align-items: center; gap: 8px; height: 38px; padding: 0 14px; border-bottom: 1px solid var(--app-line); background: var(--chrome-bg, transparent); }
+.chrome i { width: 10px; height: 10px; border-radius: 50%; background: var(--app-line-2); }
+.chrome .url { margin-left: 16px; flex: 1; max-width: 420px; height: 22px; border-radius: 6px; background: var(--app-soft); font: 400 11px/22px var(--f-mono); color: var(--app-fg-3); padding: 0 10px; white-space: nowrap; overflow: hidden; }
+.chrome .url em { font-style: normal; color: var(--app-acc); }
+
+/* app budget */
+.bud { display: grid; grid-template-columns: 196px 1fr; height: calc(100% - 38px); }
+.bud aside { padding: 20px 18px; border-right: 1px solid var(--app-line); display: flex; flex-direction: column; gap: 18px; background: var(--aside-bg, transparent); }
+.brandrow { display: flex; align-items: center; gap: 9px; }
+.brandrow .mk { width: 26px; height: 26px; border-radius: var(--mk-r, 8px); background: var(--mk-bg, var(--app-acc)); display: grid; place-items: center; color: var(--mk-fg, #fff); font: 700 12px/1 var(--f-head); }
+.brandrow b { font: var(--app-brand); letter-spacing: -.01em; }
+.brandrow small { display: block; font: 400 10px/1.2 var(--f-mono); color: var(--app-fg-3); margin-top: 2px; }
+.fl .k { font: 500 9.5px/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--app-fg-3); margin-bottom: 9px; display: block; }
+.rail { position: relative; height: 4px; border-radius: 4px; background: var(--app-line-2); margin: 12px 4px 7px; }
+.rail i { position: absolute; left: 18%; right: 30%; top: 0; bottom: 0; border-radius: 4px; background: var(--app-acc); }
+.rail i::before, .rail i::after { content: ""; position: absolute; top: 50%; width: 13px; height: 13px; border-radius: 50%; background: var(--knob, #fff); box-shadow: 0 1px 4px rgba(0,0,0,.3), 0 0 0 1px var(--app-line-2); transform: translate(-50%, -50%); }
+.rail i::before { left: 0; } .rail i::after { left: 100%; }
+.vals { display: flex; justify-content: space-between; font: 400 10.5px/1 var(--f-mono); color: var(--app-fg-2); }
+.chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.chips span { font: 500 11px/1 var(--f-body); padding: 6px 9px; border-radius: var(--chip-r, 99px); border: 1px solid var(--app-line-2); color: var(--app-fg-2); }
+.chips span.on { background: var(--chip-on-bg, var(--app-fg)); color: var(--chip-on-fg, var(--app-bg)); border-color: transparent; }
+.priv { margin-top: auto; padding: 12px; border-radius: var(--card-r, 10px); background: var(--app-soft); font: 400 11px/1.4 var(--f-body); color: var(--app-fg-2); }
+.priv b { display: flex; align-items: center; gap: 6px; font: 600 12px/1.2 var(--f-body); color: var(--app-fg); margin-bottom: 4px; }
+.bud main { padding: 20px 22px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+.head h2 { font: var(--app-h); letter-spacing: var(--app-h-ls, -.03em); }
+.head h2 em { font: var(--app-em, inherit); color: var(--app-acc); }
+.head .btn { font: 600 11.5px/1 var(--f-body); padding: 9px 13px; border-radius: var(--btn-r, 99px); background: var(--btn-bg, var(--app-fg)); color: var(--btn-fg, var(--app-bg)); white-space: nowrap; display: flex; align-items: center; gap: 6px; }
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--kpi-gap, 10px); }
+.kpi { padding: 12px 13px; border-radius: var(--card-r, 10px); background: var(--kpi-bg, var(--app-soft)); border: var(--kpi-bd, 0); }
+.kpi span { font: 500 9.5px/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--app-fg-3); }
+.kpi b { display: block; margin-top: 8px; font: var(--kpi-n); letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.kpi b.pos { color: var(--pos); } .kpi b.neg { color: var(--neg); }
+.chart { position: relative; height: 142px; border-radius: var(--card-r, 10px); background: var(--chart-bg, transparent); border: var(--chart-bd, 1px solid var(--app-line)); padding: 10px 12px 0; }
+.chart .k { position: absolute; left: 12px; top: 10px; font: 500 9.5px/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--app-fg-3); }
+.chart .lg { position: absolute; right: 12px; top: 9px; display: flex; gap: 12px; font: 400 10px/1 var(--f-mono); color: var(--app-fg-2); }
+.chart .lg i { display: inline-block; width: 12px; height: 3px; margin-right: 5px; vertical-align: middle; background: var(--app-acc); }
+.chart .lg i.p { background: none; border-top: 1.5px dashed var(--plan); height: 0; }
+.chart svg { position: absolute; left: 12px; right: 12px; bottom: 8px; width: calc(100% - 24px); height: 104px; }
+table.t { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.t th { text-align: left; font: 500 9.5px/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--app-fg-3); padding: 0 8px 8px; border-bottom: 1px solid var(--app-line); }
+.t th small { display: block; margin-top: 4px; letter-spacing: .04em; text-transform: none; color: var(--app-acc-2); }
+.t td { padding: 8px; border-bottom: 1px solid var(--app-line); font: 400 12px/1.2 var(--f-body); }
+.t td.d { font-family: var(--f-mono); font-size: 11px; color: var(--app-fg-2); }
+.t td.c span { font: 500 10.5px/1 var(--f-body); padding: 4px 7px; border-radius: var(--chip-r, 99px); background: var(--app-soft); color: var(--app-fg-2); }
+.t td.n { text-align: right; font-family: var(--f-num, var(--f-mono)); font-size: 12px; }
+.t td.n.neg { color: var(--neg); } .t td.n.pos { color: var(--pos); }
+.rej { display: inline-flex; gap: 6px; align-items: center; font: 500 10.5px/1 var(--f-mono); color: var(--neg); }
+
+/* app club (téléphone) */
+.club { position: absolute; inset: 0; padding: 46px 16px 16px; display: flex; flex-direction: column; gap: 12px; }
+.club .top { display: flex; justify-content: space-between; align-items: flex-start; }
+.club .top small { font: 500 9.5px/1.3 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--club-fg-3); }
+.club h3 { font: var(--club-h); letter-spacing: var(--club-h-ls, -.03em); line-height: .95; margin-top: 6px; }
+.club h3 em { font: var(--club-em, inherit); color: var(--club-acc); }
+.wk { font: 600 10px/1 var(--f-mono); padding: 6px 8px; border-radius: var(--chip-r, 99px); background: var(--club-soft); color: var(--club-fg); white-space: nowrap; }
+.lt { display: grid; gap: var(--row-gap, 2px); }
+.row { display: grid; grid-template-columns: 18px 1fr 30px 76px; align-items: center; gap: 8px; padding: 8px 9px; border-radius: var(--row-r, 9px); background: var(--club-row); }
+.row.me { background: var(--club-me-bg); color: var(--club-me-fg); }
+.row .p { font: 600 11px/1 var(--f-mono); color: var(--club-fg-3); }
+.row.me .p { color: inherit; opacity: .7; }
+.row .tm { display: flex; align-items: center; gap: 7px; font: var(--club-team); white-space: nowrap; overflow: hidden; }
+.row .tm i { flex: none; width: 10px; height: 10px; border-radius: var(--dot-r, 50%); background: var(--tc); }
+.row .pts { font: var(--club-pts); text-align: right; font-variant-numeric: tabular-nums; }
+.form { display: flex; gap: 3px; justify-content: flex-end; }
+.form i { width: 12px; height: 15px; border-radius: 3px; font: 700 8px/15px var(--f-mono); text-align: center; font-style: normal; color: #fff; }
+.form .W { background: var(--w); } .form .D { background: var(--dr); } .form .L { background: var(--l); }
+.streak { padding: 11px 12px; border-radius: var(--card-r, 12px); background: var(--club-soft); }
+.streak .k { font: 500 9.5px/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--club-fg-3); }
+.streak svg { display: block; width: 100%; height: 58px; margin-top: 6px; }
+.share { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 11px 13px; border-radius: var(--btn-r, 99px); background: var(--club-btn-bg); color: var(--club-btn-fg); font: 600 12px/1 var(--f-body); }
+.share code { font: 500 10px/1 var(--f-mono); opacity: .75; }
+
+/* ======================= 1 · SILK (inkyy, hackodds) ======================= */
+.d1 { --bg: #050505; --fg: #F1EEE8; --fg-2: rgba(241,238,232,.62); --fg-3: rgba(241,238,232,.4); --line: rgba(241,238,232,.12); --acc: #E9D8B4;
+  --f-body: "Inter Tight", Inter, sans-serif; --f-mono: "Geist Mono", monospace; --f-head: "Inter Tight", sans-serif;
+  --h1: 300 64px/1 "Inter Tight", sans-serif; --em: italic 400 1.05em/1 "Instrument Serif", serif; --em-c: rgba(241,238,232,.5);
+  --type-a: 300 26px/1 "Inter Tight"; --grain: .22;
+  --app-bg: #0C0C0D; --app-fg: #EDEAE4; --app-fg-2: rgba(237,234,228,.6); --app-fg-3: rgba(237,234,228,.38); --app-line: rgba(237,234,228,.08); --app-line-2: rgba(237,234,228,.16); --app-soft: rgba(237,234,228,.05); --app-acc: #E9D8B4; --app-acc-2: #B9A98B;
+  --app-brand: 500 13px/1.1 "Inter Tight"; --app-h: 300 30px/1 "Inter Tight"; --app-em: italic 400 1.08em/1 "Instrument Serif"; --kpi-n: 300 24px/1 "Inter Tight"; --pos: #CFE7C9; --neg: #F0B9A0; --plan: rgba(237,234,228,.5);
+  --chart-bd: 0; --chart-bg: linear-gradient(180deg, rgba(233,216,180,.06), transparent); --btn-bg: #EDEAE4; --btn-fg: #0C0C0D; --chip-on-bg: #E9D8B4; --chip-on-fg: #0C0C0D; --mk-bg: #EDEAE4; --mk-fg: #0C0C0D;
+  --win-sh: 0 80px 160px -50px rgba(0,0,0,.9), 0 0 0 1px rgba(255,255,255,.06);
+  --club-bg: #0A0A0B; --club-fg: #EDEAE4; --club-fg-3: rgba(237,234,228,.4); --club-soft: rgba(237,234,228,.06); --club-row: rgba(237,234,228,.035); --club-me-bg: #EDEAE4; --club-me-fg: #0A0A0B; --club-acc: #E9D8B4;
+  --club-h: 300 30px/1 "Inter Tight"; --club-em: italic 400 1.1em/1 "Instrument Serif"; --club-team: 500 12.5px/1 "Inter Tight"; --club-pts: 300 18px/1 "Inter Tight";
+  --club-btn-bg: #E9D8B4; --club-btn-fg: #0A0A0B; --w: #6E8F6A; --dr: #6B6457; --l: #8E4A3A; }
+/* ======================= 2 · ORB (ElevenLabs, 1X) ======================= */
+.d2 { --bg: #F6F5F2; --fg: #111; --fg-2: rgba(17,17,17,.62); --fg-3: rgba(17,17,17,.42); --line: rgba(17,17,17,.1); --acc: #F06B3E;
+  --f-body: Inter, sans-serif; --f-mono: "Geist Mono", monospace; --f-head: Inter, sans-serif;
+  --h1: 400 60px/1.02 Inter, sans-serif; --h1-ls: -.045em; --em: 400 1em/1 Inter; --em-c: rgba(17,17,17,.42);
+  --type-a: 400 26px/1 Inter; --grain: .1;
+  --app-bg: #FFFFFF; --app-fg: #141414; --app-fg-2: rgba(20,20,20,.6); --app-fg-3: rgba(20,20,20,.4); --app-line: rgba(20,20,20,.07); --app-line-2: rgba(20,20,20,.14); --app-soft: #F3F2EF; --app-acc: #141414; --app-acc-2: #8A8A86;
+  --app-brand: 600 13px/1.1 Inter; --app-h: 400 28px/1.05 Inter; --kpi-n: 400 23px/1 Inter; --pos: #1F8A5B; --neg: #D4512A; --plan: #A9A6A0;
+  --chart-bd: 0; --chart-bg: #F3F2EF; --card-r: 16px; --btn-r: 99px; --mk-r: 50%; --mk-bg: radial-gradient(circle at 35% 30%, #FFD9B8, #F06B3E 45%, #7B4BD1); --win-r: 22px; --win-sh: 0 50px 100px -40px rgba(30,25,20,.35);
+  --club-bg: #FFFFFF; --club-fg: #141414; --club-fg-3: rgba(20,20,20,.42); --club-soft: #F3F2EF; --club-row: transparent; --club-me-bg: #F3F2EF; --club-me-fg: #141414; --club-acc: #141414;
+  --club-h: 400 28px/1 Inter; --club-team: 500 12.5px/1 Inter; --club-pts: 500 15px/1 Inter; --row-r: 12px; --club-btn-bg: #141414; --club-btn-fg: #fff; --ph-body: #EDEBE6;
+  --w: #3FAE7A; --dr: #C9C5BD; --l: #E8724A; }
+/* ======================= 3 · PITLANE (Lando Norris, Terminal) ======================= */
+.d3 { --bg: #252B20; --fg: #14170F; --fg-2: rgba(20,23,15,.66); --fg-3: rgba(20,23,15,.46); --line: rgba(20,23,15,.14); --acc: #D4FF1F;
+  --f-body: Barlow, sans-serif; --f-mono: "Geist Mono", monospace; --f-head: "Barlow Condensed", sans-serif;
+  --h1: 800 92px/.86 "Barlow Condensed", sans-serif; --h1-ls: -.01em; --em: 800 1em/.86 "Barlow Condensed"; --em-c: #14170F;
+  --type-a: 800 30px/1 "Barlow Condensed"; --grain: .08; --sw-r: 6px;
+  --app-bg: #FAFAF7; --app-fg: #14170F; --app-fg-2: rgba(20,23,15,.62); --app-fg-3: rgba(20,23,15,.42); --app-line: rgba(20,23,15,.1); --app-line-2: rgba(20,23,15,.2); --app-soft: #EEEFE8; --app-acc: #14170F; --app-acc-2: #6B7A2A;
+  --app-brand: 700 16px/1 "Barlow Condensed"; --app-h: 800 38px/.9 "Barlow Condensed"; --app-h-ls: 0; --kpi-n: 700 30px/1 "Barlow Condensed"; --f-num: "Barlow Condensed"; --pos: #3F7D20; --neg: #C2410C; --plan: #9BA08C;
+  --card-r: 6px; --chip-r: 4px; --btn-r: 8px; --btn-bg: #D4FF1F; --btn-fg: #14170F; --chip-on-bg: #14170F; --chip-on-fg: #D4FF1F; --mk-r: 6px; --mk-bg: #D4FF1F; --mk-fg: #14170F; --win-r: 10px; --kpi-bg: #fff; --kpi-bd: 1px solid rgba(20,23,15,.1);
+  --club-bg: #14170F; --club-fg: #F4F6EC; --club-fg-3: rgba(244,246,236,.45); --club-soft: rgba(244,246,236,.07); --club-row: rgba(244,246,236,.04); --club-me-bg: #D4FF1F; --club-me-fg: #14170F; --club-acc: #D4FF1F;
+  --f-club: Barlow, sans-serif; --club-h: 800 36px/.9 "Barlow Condensed"; --club-h-ls: 0; --club-team: 700 15px/1 "Barlow Condensed"; --club-pts: 800 22px/1 "Barlow Condensed"; --row-r: 4px; --club-btn-bg: #D4FF1F; --club-btn-fg: #14170F;
+  --w: #7DB52A; --dr: #6E7262; --l: #C2410C; }
+/* ======================= 4 · HORIZON (Microsoft AI, Terminal) ======================= */
+.d4 { --bg: #CDBFC7; --fg: #FFF8EC; --fg-2: rgba(255,248,236,.82); --fg-3: rgba(255,248,236,.62); --line: rgba(255,248,236,.3); --acc: #FFF8EC;
+  --f-body: Inter, sans-serif; --f-mono: "Geist Mono", monospace; --f-head: Newsreader, serif;
+  --h1: 400 70px/1 Newsreader, serif; --h1-ls: -.025em; --em: italic 300 1em/1 Newsreader; --em-c: #FFF8EC;
+  --type-a: 400 30px/1 Newsreader; --grain: .32;
+  --app-bg: rgba(255,250,242,.86); --app-fg: #2B2320; --app-fg-2: rgba(43,35,32,.64); --app-fg-3: rgba(43,35,32,.44); --app-line: rgba(43,35,32,.08); --app-line-2: rgba(43,35,32,.16); --app-soft: rgba(43,35,32,.045); --app-acc: #C76A2E; --app-acc-2: #8A6A57;
+  --app-brand: 500 15px/1.1 Newsreader; --app-h: 400 32px/1 Newsreader; --app-h-ls: -.02em; --app-em: italic 300 1em/1 Newsreader; --kpi-n: 400 26px/1 Newsreader; --f-num: Inter; --pos: #4E7A55; --neg: #B5532A; --plan: #A99487;
+  --card-r: 14px; --win-r: 20px; --chart-bd: 0; --chart-bg: linear-gradient(180deg, rgba(199,106,46,.08), rgba(199,106,46,0)); --btn-bg: #2B2320; --btn-fg: #FFF8EC; --mk-r: 50%; --mk-bg: linear-gradient(135deg, #F2C98F, #C76A2E); --chrome-bg: rgba(255,250,242,.5);
+  --win-sh: 0 70px 140px -50px rgba(60,30,20,.55);
+  --club-bg: linear-gradient(180deg, #2C2340 0%, #8A4E4A 52%, #E39A5C 100%); --club-fg: #FFF8EC; --club-fg-3: rgba(255,248,236,.62); --club-soft: rgba(255,248,236,.13); --club-row: rgba(255,248,236,.08); --club-me-bg: #FFF8EC; --club-me-fg: #2B2320; --club-acc: #FFE2B8;
+  --club-h: 400 32px/1 Newsreader; --club-em: italic 300 1em/1 Newsreader; --club-team: 500 12.5px/1 Inter; --club-pts: 400 19px/1 Newsreader; --row-r: 12px; --club-btn-bg: #FFF8EC; --club-btn-fg: #2B2320;
+  --w: #6F9A6E; --dr: #A9927F; --l: #B5532A; }
+/* ======================= 5 · LEDGER GRID (iterate, Trendtrack) ======================= */
+.d5 { --bg: #F4F4F1; --fg: #0B0D10; --fg-2: rgba(11,13,16,.64); --fg-3: rgba(11,13,16,.44); --line: rgba(11,13,16,.14); --acc: #16A34A;
+  --f-body: Geist, sans-serif; --f-mono: "Geist Mono", monospace; --f-head: "Geist Mono", monospace;
+  --h1: 400 56px/1.02 "Geist Mono", monospace; --h1-ls: -.05em; --em: 600 1em/1 "Geist Mono"; --em-c: #0B0D10;
+  --type-a: 500 24px/1 "Geist Mono"; --grain: .06; --sw-r: 0;
+  --app-bg: #FBFBF9; --app-fg: #0B0D10; --app-fg-2: rgba(11,13,16,.62); --app-fg-3: rgba(11,13,16,.42); --app-line: rgba(11,13,16,.1); --app-line-2: rgba(11,13,16,.22); --app-soft: rgba(11,13,16,.035); --app-acc: #16A34A; --app-acc-2: #16A34A;
+  --app-brand: 600 12px/1.1 "Geist Mono"; --app-h: 500 26px/1 "Geist Mono"; --app-h-ls: -.04em; --kpi-n: 500 22px/1 "Geist Mono"; --pos: #16A34A; --neg: #DC2626; --plan: #0B0D10;
+  --card-r: 0; --chip-r: 0; --btn-r: 0; --win-r: 4px; --mk-r: 0; --mk-bg: #0B0D10; --btn-bg: #0B0D10; --btn-fg: #F4F4F1; --kpi-gap: 0; --kpi-bg: transparent; --kpi-bd: 1px solid rgba(11,13,16,.12); --chip-on-bg: #0B0D10; --chip-on-fg: #F4F4F1;
+  --win-sh: 0 50px 100px -50px rgba(11,13,16,.4), 8px 8px 0 rgba(11,13,16,.08);
+  --club-bg: #0B0D10; --club-fg: #F4F4F1; --club-fg-3: rgba(244,244,241,.44); --club-soft: rgba(244,244,241,.06); --club-row: transparent; --club-me-bg: #16A34A; --club-me-fg: #0B0D10; --club-acc: #4ADE80;
+  --f-club: "Geist Mono", monospace; --club-h: 500 26px/1 "Geist Mono"; --club-h-ls: -.05em; --club-team: 500 12px/1 "Geist Mono"; --club-pts: 600 15px/1 "Geist Mono"; --row-r: 0; --row-gap: 0; --dot-r: 0; --club-btn-bg: #4ADE80; --club-btn-fg: #0B0D10;
+  --w: #16A34A; --dr: #52525B; --l: #DC2626; }
+.d5 .row { border-bottom: 1px solid rgba(244,244,241,.1); }
+.d5 .row.me .form .W { background: #0B0D10; }
+.d3 .tag b { color: #14170F; background: #D4FF1F; padding: 4px 7px; border-radius: 3px; }
+.d3 .row.me .tm i { background: #14170F; }
+.d5 .t td.c span { background: none; border: 1px solid var(--app-line-2); }
+</style>
+</head>
+<body>
+<div class="board" id="board">
+  <div class="decor" id="decor"></div>
+  <div class="grain"></div>
+  <section class="side">
+    <div class="tag"><b id="num"></b><span>Direction for both apps</span></div>
+    <h1 id="title"></h1>
+    <p class="pitch" id="pitch"></p>
+    <div class="fit">
+      <div><span class="k">Budget app</span><p id="fitB"></p></div>
+      <div><span class="k">Club app</span><p id="fitC"></p></div>
+    </div>
+    <div class="kit">
+      <div class="sw" id="sw"></div>
+      <div class="type" id="type"></div>
+      <p class="insp" id="insp"></p>
+    </div>
+  </section>
+  <section class="stage">
+    <div class="desk">
+      <div class="chrome"><i></i><i></i><i></i><div class="url">fernstreet.org/budget/<em>#bb=k9Qe…</em></div></div>
+      <div class="bud">
+        <aside>
+          <div class="brandrow"><span class="mk">FS</span><div><b>Fern Street</b><small>Residents' association</small></div></div>
+          <div class="fl"><span class="k">Amount</span><div class="rail"><i></i></div><div class="vals"><span>−€500</span><span>+€3,000</span></div></div>
+          <div class="fl"><span class="k">Categories</span><div class="chips"><span class="on">Activities</span><span class="on">Events</span><span>Premises</span><span class="on">Grants</span><span>Fixed costs</span><span>Dues</span></div></div>
+          <div class="fl"><span class="k">Financial year</span><div class="chips"><span class="on">2026</span><span>2025</span></div></div>
+          <div class="priv"><b><svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5" fill="currentColor"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg> Private link</b>Encrypted in the browser. The key stays in the link.</div>
+        </aside>
+        <main>
+          <div class="head"><h2>Budget <em>2026</em></h2><span class="btn">Share privately →</span></div>
+          <div class="kpis">
+            <div class="kpi"><span>Income</span><b class="pos">€12,480</b></div>
+            <div class="kpi"><span>Expenses</span><b class="neg">€9,315</b></div>
+            <div class="kpi"><span>Balance</span><b>+€3,165</b></div>
+            <div class="kpi"><span>vs plan</span><b>−3.1%</b></div>
+          </div>
+          <div class="chart"><span class="k">Monthly spending</span><span class="lg"><span><i></i>actual</span><span><i class="p"></i>planned</span></span>
+            <svg viewBox="0 0 600 104" preserveAspectRatio="none" id="chartB"></svg>
+          </div>
+          <table class="t">
+            <thead><tr><th>Date<small>date</small></th><th>Label<small>text</small></th><th>Category<small>category</small></th><th style="text-align:right">Amount<small>number</small></th></tr></thead>
+            <tbody>
+              <tr><td class="d">2026-03-19</td><td>Neighbourhood party</td><td class="c"><span>Events</span></td><td class="n neg">−640.00</td></tr>
+              <tr><td class="d">2026-03-02</td><td>Insurance</td><td class="c"><span>Fixed costs</span></td><td class="n neg">−212.40</td></tr>
+              <tr><td class="d">2026-02-11</td><td>Workshop supplies</td><td class="c"><span>Activities</span></td><td class="n neg">−145.90</td></tr>
+              <tr><td class="d">2026-02-03</td><td>City grant</td><td class="c"><span>Grants</span></td><td class="n pos">+2,500.00</td></tr>
+            </tbody>
+          </table>
+          <span class="rej">● 2 rows rejected · review</span>
+        </main>
+      </div>
+    </div>
+    <div class="phone"><div class="scr"><span class="notch"></span>
+      <div class="club">
+        <div class="top"><div><small>Riverside Six · Season 2026</small><h3>League <em>table</em></h3></div><span class="wk">Week 12</span></div>
+        <div class="lt" id="lt"></div>
+        <div class="streak"><span class="k">Castors · form streak</span><svg viewBox="0 0 260 58" preserveAspectRatio="none" id="streak"></svg></div>
+        <div class="share"><span>Share table</span><code>#bb=r2Vx…</code></div>
+      </div>
+    </div></div>
+  </section>
+</div>
+<script>
+const D = {
+  1: { name: 'Silk', title: 'Quiet light <em>on black.</em>', pitch: 'Absolute black, ribbons of light like folded silk, a thin grotesk and a grey italic serif. Luxurious and calm: the numbers glow, everything else recedes.',
+       fitB: 'A treasurer\'s evening view: muted gold for income, soft coral for spending, nothing loud.', fitC: 'The league table reads like a premium sports broadcast, the leading team in bone white.',
+       sw: ['#050505', '#0C0C0D', '#EDEAE4', '#E9D8B4', '#8E4A3A'], type: ['Inter Tight 300', 'Instrument Serif italic'], insp: 'Inspired by inkyy · hackodds' },
+  2: { name: 'Orb', title: 'Soft spheres, <em>clear numbers.</em>', pitch: 'Off-white, airy, rounded. Each category and each team gets a grainy gradient sphere, like a living colour. Friendly enough for volunteers, precise enough for accounts.',
+       fitB: 'Categories become coloured orbs; big calm figures on white cards.', fitC: 'Every team has its own orb colour; the table is light and easy to scan on a phone.',
+       sw: ['#F6F5F2', '#FFFFFF', '#141414', '#F06B3E', '#7B4BD1'], type: ['Inter 400', 'Geist Mono'], insp: 'Inspired by ElevenLabs · 1X' },
+  3: { name: 'Pitlane', title: 'RACE DATA FOR THE LOCAL LEAGUE.', pitch: 'A dark olive frame around an off-white page, neon lime, condensed bold capitals. Telemetry energy: fast to read, made to be shown on match day.',
+       fitB: 'The budget becomes a race dashboard: big condensed figures, lime call to action.', fitC: 'Black screen, lime leader row, giant points: a stadium board in your pocket.',
+       sw: ['#252B20', '#FAFAF7', '#14170F', '#D4FF1F', '#C2410C'], type: ['Barlow Condensed 800', 'Barlow'], insp: 'Inspired by Lando Norris · Terminal Industries' },
+  4: { name: 'Horizon', title: 'A budget <em>at golden hour.</em>', pitch: 'A grainy sunset sky, frosted glass panels, a warm humanist serif. Human, optimistic, community-minded: data as something to share, not to fear.',
+       fitB: 'Glass sheets over warm light; amounts set in a soft serif.', fitC: 'The table floats on a dusk gradient, perfect for the walk home after the match.',
+       sw: ['#2C2340', '#8A4E4A', '#E39A5C', '#FFF8EC', '#C76A2E'], type: ['Newsreader', 'Inter'], insp: 'Inspired by Microsoft AI · Terminal Industries' },
+  5: { name: 'Ledger grid', title: 'Every number <em>accounted for.</em>', pitch: 'Monospace, hairlines, square corners, one green signal. The look of an audit sheet and a terminal: rigorous, transparent, impossible to misread.',
+       fitB: 'A pure accounting grid: every cell aligned, green only when the books balance.', fitC: 'A terminal-style scoreboard, the leader highlighted in signal green.',
+       sw: ['#F4F4F1', '#FBFBF9', '#0B0D10', '#16A34A', '#DC2626'], type: ['Geist Mono', 'Geist'], insp: 'Inspired by iterate · Trendtrack' },
+};
+const d = +(new URLSearchParams(location.search).get('d') || 1);
+const cfg = D[d];
+document.getElementById('board').classList.add('d' + d);
+document.body.classList.add('d' + d);
+document.getElementById('num').textContent = `0${d} / 05 · ${cfg.name}`;
+document.getElementById('title').innerHTML = cfg.title;
+document.getElementById('pitch').textContent = cfg.pitch;
+document.getElementById('fitB').textContent = cfg.fitB;
+document.getElementById('fitC').textContent = cfg.fitC;
+document.getElementById('sw').innerHTML = cfg.sw.map((c) => `<i style="--c:${c}"></i>`).join('');
+document.getElementById('type').innerHTML = `<b>Aa</b><span>${cfg.type[0]}<br>${cfg.type[1]}</span>`;
+document.getElementById('insp').textContent = cfg.insp;
+const cs = getComputedStyle(document.getElementById('board'));
+const v = (k) => cs.getPropertyValue(k).trim();
+
+// graphique budget : barres réelles + ligne prévue
+const act = [1180, 1520, 1610, 1340, 1890, 1775], plan = [1300, 1400, 1500, 1500, 1700, 1800];
+const W = 600, H = 104, max = 2000, bw = 58, gap = (W - 6 * bw) / 6;
+let s = '';
+act.forEach((a, i) => { const h = (a / max) * (H - 14); const x = gap / 2 + i * (bw + gap); const r = d === 5 ? 0 : d === 3 ? 2 : 6;
+  s += d === 5 ? `<rect x="${x}" y="${H - h}" width="${bw}" height="${h}" fill="url(#dith)"/>` : `<rect x="${x}" y="${H - h}" width="${bw}" height="${h}" rx="${r}" fill="${v('--app-acc')}" opacity="${i === 4 ? 1 : .78}"/>`;
+  s += `<text x="${x + bw / 2}" y="${H - h - 5}" text-anchor="middle" font-size="9" font-family="Geist Mono" fill="${v('--app-fg-3')}">${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'][i]}</text>`; });
+const pts = plan.map((p, i) => `${gap / 2 + i * (bw + gap) + bw / 2},${H - (p / max) * (H - 14)}`).join(' ');
+s += `<polyline points="${pts}" fill="none" stroke="${v('--plan')}" stroke-width="1.6" stroke-dasharray="5 4"/>`;
+const defs = d === 5 ? `<defs><pattern id="dith" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="4" fill="#16A34A" opacity=".25"/><rect width="2" height="2" fill="#16A34A"/><rect x="2" y="2" width="2" height="2" fill="#16A34A"/></pattern></defs>` : '';
+document.getElementById('chartB').innerHTML = defs + s;
+
+// classement
+const teams = [['Castors', 23, 'WWDLW'], ['Herons', 19, 'WLWWD'], ['Otters', 15, 'DWLDW'], ['Falcons', 13, 'LWDWL'], ['Lynx', 9, 'LLWDL'], ['Swifts', 6, 'DLLLW']];
+const tcol = { 1: ['#E9D8B4', '#9FB4C7', '#8E9E86', '#B98E6E', '#7E7A8E', '#6B6457'], 2: ['radial-gradient(circle at 30% 30%,#FFD2B0,#F06B3E)', 'radial-gradient(circle at 30% 30%,#CFE3FF,#5B7FE0)', 'radial-gradient(circle at 30% 30%,#D8F5E2,#3FAE7A)', 'radial-gradient(circle at 30% 30%,#F2DDFF,#9A5BE0)', 'radial-gradient(circle at 30% 30%,#FFF1C2,#E0B53F)', 'radial-gradient(circle at 30% 30%,#EAE7E2,#9B968D)'],
+  3: ['#D4FF1F', '#FFFFFF', '#7DB52A', '#F97316', '#38BDF8', '#A3A3A3'], 4: ['#FFE2B8', '#F2B48B', '#C9D7B8', '#B9B2E0', '#E08C7A', '#D8CFC5'], 5: ['#4ADE80', '#F4F4F1', '#60A5FA', '#F59E0B', '#F472B6', '#71717A'] }[d];
+document.getElementById('lt').innerHTML = teams.map(([n, p, f], i) => `<div class="row${i === 0 ? ' me' : ''}"><span class="p">${i + 1}</span><span class="tm" style="--tc:${tcol[i]}"><i></i>${d === 3 ? n.toUpperCase() : n}</span><span class="pts">${p}</span><span class="form">${[...f].map((c) => `<i class="${c}">${c}</i>`).join('')}</span></div>`).join('');
+const pts2 = [3, 6, 7, 7, 10, 13, 14, 14, 17, 20, 20, 23];
+const sw2 = 260, sh2 = 58;
+const p2 = pts2.map((p, i) => `${(i / 11) * sw2},${sh2 - 4 - (p / 24) * (sh2 - 8)}`).join(' ');
+document.getElementById('streak').innerHTML = `<polyline points="${p2} ${sw2},${sh2} 0,${sh2}" fill="${v('--club-acc')}" opacity=".15"/><polyline points="${p2}" fill="none" stroke="${v('--club-acc')}" stroke-width="2.2" stroke-linejoin="round"/>`;
+
+// décor propre à chaque direction
+const decor = document.getElementById('decor');
+if (d === 1) {
+  decor.innerHTML = `<svg width="1600" height="900" viewBox="0 0 1600 900"><defs><filter id="b1"><feGaussianBlur stdDeviation="7"/></filter><filter id="b2"><feGaussianBlur stdDeviation="1.4"/></filter><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".45" stop-color="#F3E6CC" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
+    <g fill="none" stroke="url(#g1)"><path d="M380 -40 C 520 220, 160 420, 330 640 S 760 980, 640 1000" stroke-width="16" filter="url(#b1)" opacity=".55"/><path d="M380 -40 C 520 220, 160 420, 330 640 S 760 980, 640 1000" stroke-width="1.6" filter="url(#b2)"/>
+    <path d="M1650 160 C 1320 300, 1180 520, 1260 700 S 1180 960, 1100 1000" stroke-width="22" filter="url(#b1)" opacity=".45"/><path d="M1650 160 C 1320 300, 1180 520, 1260 700 S 1180 960, 1100 1000" stroke-width="1.8" filter="url(#b2)"/>
+    <path d="M1700 520 C 1500 560, 1420 700, 1520 960" stroke-width="12" filter="url(#b1)" opacity=".35"/></g></svg>`;
+} else if (d === 2) {
+  decor.innerHTML = `<div style="position:absolute;left:1180px;top:-120px;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFE1C7 0,#F58A5A 34%,#C65AA8 62%,#7B4BD1 82%,#5A3BB0);filter:blur(1px);opacity:.95"></div>
+    <div style="position:absolute;left:1180px;top:-120px;width:560px;height:560px;border-radius:50%;background-image:var(--noise);mix-blend-mode:overlay;opacity:.7"></div>
+    <div style="position:absolute;left:470px;top:700px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#E8F3EC,#A9D8C0 45%,#7FB3D9 80%);opacity:.9"></div>
+    <div style="position:absolute;left:470px;top:700px;width:300px;height:300px;border-radius:50%;background-image:var(--noise);mix-blend-mode:overlay;opacity:.6"></div>`;
+} else if (d === 3) {
+  decor.innerHTML = `<div style="position:absolute;inset:18px;border-radius:22px;background:#F7F7F2"></div>
+    <div style="position:absolute;right:40px;bottom:-60px;font:800 520px/.8 'Barlow Condensed';color:transparent;-webkit-text-stroke:1.5px rgba(20,23,15,.1)">26</div>
+    <svg width="1600" height="900" style="position:absolute;inset:0"><path d="M540 820 L 760 760 L 900 790 L 1080 700 L 1300 730 L 1600 620" fill="none" stroke="rgba(20,23,15,.12)" stroke-width="1"/><path d="M540 840 L 760 790 L 900 810 L 1080 730 L 1300 760 L 1600 650" fill="none" stroke="#D4FF1F" stroke-width="3"/></svg>
+    <div style="position:absolute;left:64px;top:38px;height:12px;width:120px;background:#D4FF1F;border-radius:3px"></div>`;
+  document.querySelector('.side').style.color = '#14170F';
+} else if (d === 4) {
+  decor.innerHTML = `<div style="position:absolute;inset:0;background:linear-gradient(170deg,#5E5679 0%,#8E7790 20%,#C89A8E 40%,#E2A86F 60%,#A9644A 80%,#2A1F25 100%)"></div>
+    <div style="position:absolute;left:-200px;top:300px;width:1200px;height:500px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,230,180,.7),transparent);filter:blur(20px)"></div>
+    <div style="position:absolute;right:-100px;top:-100px;width:900px;height:600px;border-radius:50%;background:radial-gradient(closest-side,rgba(120,140,170,.45),transparent);filter:blur(30px)"></div>`;
+} else if (d === 5) {
+  decor.innerHTML = `<div style="position:absolute;inset:0;background-image:linear-gradient(rgba(11,13,16,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(11,13,16,.06) 1px,transparent 1px);background-size:40px 40px"></div>
+    <div style="position:absolute;left:32px;right:32px;top:32px;bottom:32px;border:1px solid rgba(11,13,16,.25)"></div>
+    <div style="position:absolute;left:32px;right:32px;top:32px;height:18px;border-bottom:1px solid rgba(11,13,16,.25);background:repeating-linear-gradient(-45deg,rgba(11,13,16,.22) 0 1px,transparent 1px 7px)"></div>
+    <div style="position:absolute;left:28px;top:28px;width:9px;height:9px;background:#0B0D10"></div><div style="position:absolute;right:28px;top:28px;width:9px;height:9px;background:#0B0D10"></div>
+    <div style="position:absolute;right:48px;bottom:44px;font:500 11px/1 'Geist Mono';letter-spacing:.14em;color:rgba(11,13,16,.45)">BB-DIR-05 · 1600×900</div>`;
+}
+</script>
+</body>
+</html>

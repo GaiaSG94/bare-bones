@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Riverside Six · club directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600&family=Inter+Tight:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&family=Anton&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&display=swap">
+<style>
+/* Trois directions pour l'app club, pensées pour le téléphone : classement, page d'équipe, partage. */
+:root { --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+* { box-sizing: border-box; margin: 0; }
+html, body { width: 1600px; height: 900px; overflow: hidden; }
+body { background: var(--bg); color: var(--fg); font-family: var(--f-body); -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }
+.board { position: relative; width: 1600px; height: 900px; overflow: hidden; isolation: isolate; }
+.decor { position: absolute; inset: 0; z-index: 0; }
+.grain { position: absolute; inset: 0; z-index: 1; background-image: var(--noise); mix-blend-mode: overlay; opacity: var(--grain, .12); pointer-events: none; }
+.side { position: absolute; z-index: 3; left: 64px; top: 64px; bottom: 64px; width: 400px; display: flex; flex-direction: column; }
+.tag { font: 500 12px/1 "Geist Mono"; letter-spacing: .16em; text-transform: uppercase; color: var(--fg-3); }
+.tag b { color: var(--tag-c, var(--acc)); font-weight: 600; }
+.side h1 { margin-top: 24px; font: var(--h1); letter-spacing: var(--h1-ls, -.03em); text-wrap: balance; }
+.side h1 em { font: var(--em, inherit); color: var(--acc); font-style: var(--em-style, normal); }
+.side p { margin-top: 18px; font: 400 15.5px/1.55 var(--f-body); color: var(--fg-2); text-wrap: pretty; }
+.why { margin-top: 22px; display: grid; gap: 10px; }
+.why div { display: flex; gap: 10px; padding-top: 10px; border-top: 1px solid var(--line); font: 400 14px/1.45 var(--f-body); }
+.why b { flex: none; width: 22px; font: 600 12px/1.45 "Geist Mono"; color: var(--acc); }
+.kit { margin-top: auto; display: grid; gap: 12px; }
+.sw { display: flex; gap: 8px; }
+.sw i { width: 40px; height: 40px; border-radius: var(--sw-r, 50%); background: var(--c); box-shadow: 0 0 0 1px var(--line); }
+.type { display: flex; gap: 18px; align-items: baseline; font: 400 13px/1.3 "Geist Mono"; color: var(--fg-2); }
+.type b { font: var(--type-a); color: var(--fg); }
+.insp { font: 400 12px/1.4 "Geist Mono"; color: var(--fg-3); }
+
+.phones { position: absolute; z-index: 2; left: 520px; top: 0; right: 0; bottom: 0; perspective: 2400px; }
+.ph { position: absolute; width: 310px; height: 640px; border-radius: 46px; padding: 10px; background: var(--ph-body, #0B0C0F); box-shadow: 0 70px 120px -45px rgba(0,0,0,.6), inset 0 0 0 1.5px rgba(255,255,255,.12); }
+.ph:nth-child(1) { left: 20px; top: 150px; transform: rotateY(14deg) rotateX(2deg); }
+.ph:nth-child(2) { left: 370px; top: 120px; transform: translateZ(60px); }
+.ph:nth-child(3) { left: 720px; top: 150px; transform: rotateY(-14deg) rotateX(2deg); }
+.scr { position: relative; width: 100%; height: 100%; border-radius: 37px; overflow: hidden; background: var(--s-bg); color: var(--s-fg); font-family: var(--f-body); }
+.notch { position: absolute; left: 50%; top: 10px; width: 94px; height: 26px; border-radius: 20px; background: #000; transform: translateX(-50%); z-index: 9; }
+.in { position: absolute; inset: 0; padding: 48px 16px 18px; display: flex; flex-direction: column; gap: 12px; }
+.sm { font: 500 9.5px/1.3 "Geist Mono"; letter-spacing: .12em; text-transform: uppercase; color: var(--s-fg-3); }
+.h { font: var(--s-h); letter-spacing: var(--s-h-ls, -.02em); line-height: .92; }
+.h em { color: var(--s-acc); font-style: var(--em-style, normal); font: var(--s-em, inherit); }
+.tabs { display: flex; gap: 4px; padding: 3px; border-radius: var(--r-pill, 99px); background: var(--s-soft); }
+.tabs span { flex: 1; text-align: center; padding: 7px 0; border-radius: var(--r-pill, 99px); font: 600 11.5px/1 var(--f-body); color: var(--s-fg-3); }
+.tabs span.on { background: var(--s-on-bg); color: var(--s-on-fg); }
+.lt { display: grid; gap: var(--row-gap, 3px); }
+.lh { display: grid; grid-template-columns: 16px 1fr 22px 28px 30px; gap: 7px; padding: 0 8px; font: 500 9px/1 "Geist Mono"; letter-spacing: .08em; color: var(--s-fg-3); }
+.r { display: grid; grid-template-columns: 16px 1fr 22px 28px 30px; align-items: center; gap: 7px; padding: 9px 8px; border-radius: var(--r-row, 8px); background: var(--s-row); }
+.r.top { background: var(--s-top-bg); color: var(--s-top-fg); }
+.r .p { font: 600 11px/1 "Geist Mono"; opacity: .6; }
+.r .t { display: flex; align-items: center; gap: 8px; font: var(--s-team); white-space: nowrap; }
+.crest { flex: none; width: 20px; height: 22px; background: var(--tc); clip-path: polygon(0 0, 100% 0, 100% 62%, 50% 100%, 0 62%); }
+.r .g { font: 400 11px/1 "Geist Mono"; text-align: right; opacity: .7; }
+.r .pt { font: var(--s-pts); text-align: right; }
+.form { display: flex; gap: 3px; }
+.form i { flex: 1; height: 16px; border-radius: 3px; font: 700 8.5px/16px "Geist Mono"; text-align: center; font-style: normal; color: #fff; }
+.form .W { background: var(--w); } .form .D { background: var(--d); } .form .L { background: var(--l); }
+.card { padding: 13px; border-radius: var(--r-card, 16px); background: var(--s-soft); }
+.big { display: flex; align-items: flex-end; justify-content: space-between; }
+.big b { font: var(--s-num); letter-spacing: -.03em; line-height: .85; }
+.res { display: grid; gap: 6px; }
+.res div { display: grid; grid-template-columns: 1fr auto 24px; align-items: center; gap: 8px; padding: 9px 10px; border-radius: var(--r-row, 8px); background: var(--s-row); font: 500 12.5px/1 var(--f-body); }
+.res div span:nth-child(2) { font: 600 13px/1 "Geist Mono"; }
+.res i { font-style: normal; font: 700 9px/18px "Geist Mono"; text-align: center; border-radius: 4px; color: #fff; }
+.link { display: flex; align-items: center; gap: 8px; padding: 12px 14px; border-radius: var(--r-pill, 99px); background: var(--s-soft); font: 500 11px/1 "Geist Mono"; color: var(--s-fg-3); white-space: nowrap; overflow: hidden; }
+.link em { font-style: normal; color: var(--s-acc); }
+.cta { padding: 14px; text-align: center; border-radius: var(--r-pill, 99px); background: var(--s-cta-bg); color: var(--s-cta-fg); font: var(--s-cta); }
+.note { font: 400 12px/1.45 var(--f-body); color: var(--s-fg-2); }
+.preview { border-radius: var(--r-card, 16px); overflow: hidden; border: 1px solid var(--s-line); }
+.preview .bar { padding: 10px 12px; font: 600 12px/1 var(--f-body); background: var(--s-soft); display: flex; justify-content: space-between; }
+.preview .mini { padding: 10px 12px; display: grid; gap: 6px; }
+.preview .mini div { display: flex; justify-content: space-between; font: 500 12px/1 var(--f-body); }
+
+/* ============ 1 · PITLANE ============ */
+.d1 { --bg: #252B20; --fg: #14170F; --fg-2: rgba(20,23,15,.66); --fg-3: rgba(20,23,15,.46); --line: rgba(20,23,15,.14); --acc: #6E8F00; --tag-c: #14170F;
+  --f-body: Barlow, sans-serif; --h1: 800 96px/.85 "Barlow Condensed"; --h1-ls: -.005em; --em: 800 1em/.85 "Barlow Condensed"; --type-a: 800 30px/1 "Barlow Condensed"; --sw-r: 6px; --grain: .06;
+  --s-bg: #14170F; --s-fg: #F4F6EC; --s-fg-2: rgba(244,246,236,.66); --s-fg-3: rgba(244,246,236,.42); --s-soft: rgba(244,246,236,.07); --s-row: rgba(244,246,236,.045); --s-line: rgba(244,246,236,.12); --s-acc: #D4FF1F;
+  --s-on-bg: #D4FF1F; --s-on-fg: #14170F; --s-top-bg: #D4FF1F; --s-top-fg: #14170F; --s-cta-bg: #D4FF1F; --s-cta-fg: #14170F;
+  --s-h: 800 40px/.9 "Barlow Condensed"; --s-h-ls: 0; --s-team: 700 15px/1 "Barlow Condensed"; --s-pts: 800 20px/1 "Barlow Condensed"; --s-num: 800 92px/1 "Barlow Condensed"; --s-cta: 800 17px/1 "Barlow Condensed";
+  --r-pill: 6px; --r-row: 4px; --r-card: 8px; --w: #7DB52A; --d: #5E6352; --l: #C2410C; }
+/* ============ 2 · FLOODLIGHT ============ */
+.d2 { --bg: #05070C; --fg: #EEF2F7; --fg-2: rgba(238,242,247,.64); --fg-3: rgba(238,242,247,.42); --line: rgba(238,242,247,.12); --acc: #7DD3FC;
+  --f-body: "Inter Tight", sans-serif; --h1: 700 78px/.92 "Inter Tight"; --h1-ls: -.05em; --em: 300 1em/.92 "Inter Tight"; --type-a: 800 30px/1 "Inter Tight"; --grain: .18;
+  --s-bg: linear-gradient(180deg, #0B1220 0%, #060A12 60%); --s-fg: #EEF2F7; --s-fg-2: rgba(238,242,247,.64); --s-fg-3: rgba(238,242,247,.42); --s-soft: rgba(238,242,247,.07); --s-row: rgba(238,242,247,.035); --s-line: rgba(238,242,247,.12); --s-acc: #7DD3FC;
+  --s-on-bg: #EEF2F7; --s-on-fg: #05070C; --s-top-bg: linear-gradient(90deg, rgba(125,211,252,.28), rgba(125,211,252,.06)); --s-top-fg: #fff; --s-cta-bg: #EEF2F7; --s-cta-fg: #05070C;
+  --s-h: 800 36px/.92 "Inter Tight"; --s-h-ls: -.05em; --s-em: 300 1em/.92 "Inter Tight"; --s-team: 600 13.5px/1 "Inter Tight"; --s-pts: 800 19px/1 "Inter Tight"; --s-num: 800 96px/1 "Inter Tight"; --s-cta: 700 14px/1 "Inter Tight";
+  --r-card: 18px; --r-row: 10px; --w: #22C55E; --d: #475569; --l: #EF4444; }
+/* ============ 3 · GAZETTE ============ */
+.d3 { --bg: #EFE8DA; --fg: #1B2A4A; --fg-2: rgba(27,42,74,.72); --fg-3: rgba(27,42,74,.5); --line: rgba(27,42,74,.2); --acc: #D7312B;
+  --f-body: Newsreader, Georgia, serif; --h1: 400 108px/.86 Anton, sans-serif; --h1-ls: .005em; --em: 400 1em/.86 Anton; --type-a: 400 32px/1 Anton; --sw-r: 0; --grain: .22;
+  --s-bg: #F4EEE2; --s-fg: #1B2A4A; --s-fg-2: rgba(27,42,74,.72); --s-fg-3: rgba(27,42,74,.5); --s-soft: rgba(27,42,74,.06); --s-row: transparent; --s-line: rgba(27,42,74,.22); --s-acc: #D7312B;
+  --s-on-bg: #1B2A4A; --s-on-fg: #F4EEE2; --s-top-bg: #D7312B; --s-top-fg: #F4EEE2; --s-cta-bg: #D7312B; --s-cta-fg: #F4EEE2;
+  --s-h: 400 44px/.9 Anton; --s-h-ls: .005em; --s-team: 600 14px/1 Newsreader; --s-pts: 400 20px/1 Anton; --s-num: 400 100px/1 Anton; --s-cta: 400 18px/1 Anton;
+  --r-pill: 0; --r-row: 0; --r-card: 0; --row-gap: 0; --ph-body: #1B2A4A; --w: #1B2A4A; --d: #9A8F7A; --l: #D7312B; }
+.d3 .r { border-bottom: 1px solid var(--s-line); }
+.d3 .r.top { border-bottom: 0; }
+.d3 .tabs span { font-family: "Geist Mono"; font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; }
+</style>
+</head>
+<body>
+<div class="board" id="b">
+  <div class="decor" id="decor"></div>
+  <div class="grain"></div>
+  <section class="side">
+    <div class="tag"><b id="num"></b> &nbsp;Club app direction</div>
+    <h1 id="title"></h1>
+    <p id="pitch"></p>
+    <div class="why" id="why"></div>
+    <div class="kit"><div class="sw" id="sw"></div><div class="type" id="type"></div><p class="insp" id="insp"></p></div>
+  </section>
+  <section class="phones">
+    <div class="ph"><div class="scr"><span class="notch"></span><div class="in" id="s1"></div></div></div>
+    <div class="ph"><div class="scr"><span class="notch"></span><div class="in" id="s2"></div></div></div>
+    <div class="ph"><div class="scr"><span class="notch"></span><div class="in" id="s3"></div></div></div>
+  </section>
+</div>
+<script>
+const D = {
+  1: { name: 'Pitlane', title: 'MATCH DAY, IN YOUR POCKET.', pitch: 'Dark olive and neon lime, condensed bold capitals, square shields. The energy of a race weekend applied to a six-team league: readable at arm\'s length, on the touchline.',
+       why: ['Opposite of Orb: dark, sharp, loud.', 'Huge points and W/D/L pills read at a glance.', 'Lime only for what matters: leader and share.'],
+       sw: ['#252B20', '#14170F', '#F4F6EC', '#D4FF1F', '#C2410C'], type: ['Barlow Condensed 800', 'Barlow'], insp: 'Inspired by Lando Norris · Terminal Industries',
+       teams: ['#D4FF1F', '#F4F6EC', '#7DB52A', '#F97316', '#38BDF8', '#8A8F7C'], up: true },
+  2: { name: 'Floodlight', title: 'Under the <em>lights.</em>', pitch: 'A night stadium: near-black, cold floodlight beams, heavy and light weights of one grotesk. Cinematic and calm, like a broadcast graphic at kick-off.',
+       why: ['Opposite of Orb: night versus daylight.', 'Glowing leader row, crisp white numbers.', 'Feels premium without shouting.'],
+       sw: ['#05070C', '#0B1220', '#EEF2F7', '#7DD3FC', '#EF4444'], type: ['Inter Tight 800 / 300', 'Geist Mono'], insp: 'Inspired by inkyy · Terminal Industries · Awwwards 3D',
+       teams: ['#7DD3FC', '#EEF2F7', '#22C55E', '#F59E0B', '#A78BFA', '#64748B'] },
+  3: { name: 'Gazette', title: 'THE CLUB GAZETTE.', pitch: 'A matchday programme: newsprint paper, two inks (navy and red), a poster face and a text serif, halftone texture. Warm, local, a little nostalgic: the club\'s own newspaper.',
+       why: ['Opposite of Orb: printed and graphic, not soft.', 'Two inks only: navy for facts, red for the leader.', 'Tells the season like a story.'],
+       sw: ['#EFE8DA', '#F4EEE2', '#1B2A4A', '#D7312B', '#9A8F7A'], type: ['Anton', 'Newsreader'], insp: 'Inspired by matchday programmes · iterate',
+       teams: ['#D7312B', '#1B2A4A', '#6B8F71', '#C8892B', '#5B6FA8', '#9A8F7A'], up: true },
+};
+const d = +(new URLSearchParams(location.search).get('d') || 1), c = D[d];
+document.getElementById('b').classList.add('d' + d); document.body.classList.add('d' + d);
+document.getElementById('num').textContent = `0${d} / 03 · ${c.name}`;
+document.getElementById('title').innerHTML = c.title;
+document.getElementById('pitch').textContent = c.pitch;
+document.getElementById('why').innerHTML = c.why.map((w, i) => `<div><b>0${i + 1}</b><span>${w}</span></div>`).join('');
+document.getElementById('sw').innerHTML = c.sw.map((x) => `<i style="--c:${x}"></i>`).join('');
+document.getElementById('type').innerHTML = `<b>Aa</b><span>${c.type[0]}<br>${c.type[1]}</span>`;
+document.getElementById('insp').textContent = c.insp;
+const U = (s) => (c.up ? s.toUpperCase() : s);
+const T = [['Castors', 10, '+11', 23, 'WWDLW'], ['Herons', 10, '+6', 19, 'WLWWD'], ['Otters', 10, '+2', 15, 'DWLDW'], ['Falcons', 10, '−1', 13, 'LWDWL'], ['Lynx', 10, '−7', 9, 'LLWDL'], ['Swifts', 10, '−11', 6, 'DLLLW']];
+const form = (f) => `<span class="form">${[...f].map((x) => `<i class="${x}">${x}</i>`).join('')}</span>`;
+// écran 1 : classement
+document.getElementById('s1').innerHTML = `<div><span class="sm">Riverside Six · Season 2026 · Week 12</span><div class="h" style="margin-top:8px">${d === 2 ? 'League <em>table</em>' : U('League table')}</div></div>
+<div class="tabs"><span class="on">${U('Table')}</span><span>${U('Results')}</span><span>${U('Form')}</span></div>
+<div class="lh"><span>#</span><span>TEAM</span><span>GD</span><span>PTS</span><span></span></div>
+<div class="lt">${T.map(([n, p, g, pts, f], i) => `<div class="r${i === 0 ? ' top' : ''}"><span class="p">${i + 1}</span><span class="t"><i class="crest" style="--tc:${c.teams[i]}"></i>${U(n)}</span><span class="g">${g}</span><span class="pt">${pts}</span><span></span></div>`).join('')}</div>
+<div class="card"><span class="sm">Next match · Sat 14:00</span><div style="display:flex;justify-content:space-between;align-items:center;margin-top:9px;font:var(--s-team)"><span>${U('Castors')}</span><span class="sm" style="opacity:1">vs</span><span>${U('Otters')}</span></div></div>`;
+// écran 2 : page d'équipe
+const pts = [3, 6, 7, 7, 10, 13, 14, 14, 17, 20, 23];
+const pl = pts.map((p, i) => `${(i / 10) * 254},${74 - (p / 24) * 68}`).join(' ');
+document.getElementById('s2').innerHTML = `<div style="display:flex;align-items:center;gap:12px"><i class="crest" style="--tc:${c.teams[0]};width:44px;height:50px"></i><div><span class="sm">1st · 10 played</span><div class="h" style="margin-top:6px">${U('Castors')}</div></div></div>
+<div class="big"><b>23</b><span class="sm" style="text-align:right">points<br>+11 goal diff.</span></div>
+<div class="card"><span class="sm">Form streak · last 5</span><div style="margin-top:9px">${form('WWDLW')}</div>
+<svg viewBox="0 0 254 78" style="width:100%;height:70px;margin-top:10px"><polyline points="${pl} 254,78 0,78" fill="${getComputedStyle(document.body).getPropertyValue('--s-acc')}" opacity=".16"/><polyline points="${pl}" fill="none" stroke="${getComputedStyle(document.body).getPropertyValue('--s-acc')}" stroke-width="2.4" stroke-linejoin="round"/></svg></div>
+<div class="res"><div><span>vs Herons</span><span>2–1</span><i style="background:var(--w)">W</i></div><div><span>at Lynx</span><span>3–0</span><i style="background:var(--w)">W</i></div><div><span>vs Falcons</span><span>1–1</span><i style="background:var(--d)">D</i></div><div><span>at Otters</span><span>0–2</span><i style="background:var(--l)">L</i></div></div>`;
+// écran 3 : partage public compact
+document.getElementById('s3').innerHTML = `<div><span class="sm">Share</span><div class="h" style="margin-top:8px">${d === 2 ? 'Send the <em>table</em>' : U('Send the table')}</div></div>
+<p class="note">Anyone with this link sees this exact view on their phone. No account, nothing to install.</p>
+<div class="preview"><div class="bar"><span>${U('League table')}</span><span class="sm">Week 12</span></div><div class="mini">${T.slice(0, 3).map(([n, , , p], i) => `<div><span>${i + 1}. ${U(n)}</span><b>${p}</b></div>`).join('')}<div class="sm">+ 3 more teams</div></div></div>
+<div class="link">…/club/<em>#bb=r2Vx9…</em></div>
+<div class="sm" style="line-height:1.6">Public · compact<br>The view lives in the link, not on a server.</div>
+<div style="flex:1"></div>
+<div class="cta">${U('Copy link')}</div>`;
+// décor
+const dec = document.getElementById('decor');
+if (d === 1) dec.innerHTML = `<div style="position:absolute;inset:18px;border-radius:22px;background:#F7F7F2"></div><div style="position:absolute;right:30px;bottom:-70px;font:800 560px/.8 'Barlow Condensed';color:transparent;-webkit-text-stroke:1.5px rgba(20,23,15,.09)">W12</div><div style="position:absolute;left:64px;top:38px;height:12px;width:120px;background:#D4FF1F;border-radius:3px"></div><svg width="1600" height="900" style="position:absolute;inset:0"><path d="M520 860 L 820 800 L 1000 830 L 1220 740 L 1600 690" fill="none" stroke="#D4FF1F" stroke-width="3"/></svg>`;
+if (d === 2) dec.innerHTML = `<div style="position:absolute;left:880px;top:-200px;width:520px;height:1300px;background:linear-gradient(180deg,rgba(190,225,255,.22),rgba(190,225,255,0) 70%);transform:rotate(18deg);filter:blur(24px)"></div><div style="position:absolute;left:1300px;top:-200px;width:380px;height:1200px;background:linear-gradient(180deg,rgba(190,225,255,.16),rgba(190,225,255,0) 70%);transform:rotate(-14deg);filter:blur(28px)"></div><div style="position:absolute;left:0;right:0;bottom:0;height:260px;background:radial-gradient(60% 100% at 70% 100%,rgba(34,197,94,.14),transparent)"></div><div style="position:absolute;left:900px;top:40px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 0 40px 18px rgba(200,230,255,.55)"></div><div style="position:absolute;left:1330px;top:60px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 0 36px 16px rgba(200,230,255,.5)"></div>`;
+if (d === 3) dec.innerHTML = `<div style="position:absolute;inset:0;background-image:radial-gradient(rgba(27,42,74,.16) 1.2px,transparent 1.4px);background-size:7px 7px;-webkit-mask-image:radial-gradient(70% 80% at 80% 60%,#000,transparent);mask-image:radial-gradient(70% 80% at 80% 60%,#000,transparent)"></div><div style="position:absolute;left:40px;right:40px;top:30px;height:6px;background:#1B2A4A"></div><div style="position:absolute;left:40px;right:40px;top:40px;height:2px;background:#D7312B"></div><div style="position:absolute;left:40px;right:40px;bottom:30px;height:2px;background:#1B2A4A"></div><div style="position:absolute;right:48px;bottom:44px;font:500 11px/1 'Geist Mono';letter-spacing:.14em;color:rgba(27,42,74,.6)">VOL. 1 · WEEK 12 · PRICE: FREE</div>`;
+</script>
+</body>
+</html>
