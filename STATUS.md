@@ -35,3 +35,15 @@
 - Dépôt GitHub public : https://github.com/GaiaSG94/bare-bones. Collaborateur : invitation envoyée à BaptisteFaisy.
 - En attente : trancher le conflit LabKit vs Bare Bones en Skeleton Crew dans le Sheet ; l’implémentation des specs doit être rejouée dans Kiro pour satisfaire le règlement.
 - Prochaine action : étape 2 — packages/core.
+
+## Claude
+
+- **2026-11-14 13:40** · phase : design V2 · round 2.
+- Fait :
+  - planche des états (`design/reference/directions/states.html`, `png/states.png`) ;
+  - favicons (`design/assets/favicon-*.svg`) ;
+  - images de partage (`design/assets/social-preview-1280x640.png`, `devpost-thumbnail-1500x1000.png`) ;
+  - DESIGN.md en V2 avec changelog ;
+  - doublons `bare-bones-planches/` supprimés.
+- Gaia soumet LabKit **et** Bare Bones : le conflit Skeleton Crew est levé.
+- Suite côté code : `PROMPT-BARE-BONES-SUITE.md` (racine `2026-12-04-kiroween/`), étapes 5 à 9 pour opencode.

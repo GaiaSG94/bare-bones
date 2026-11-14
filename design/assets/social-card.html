@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Bare Bones · social card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+<style>
+/* Carte de partage Bare Bones (thème Paper). Une seule source pour deux formats :
+   1280×640 (aperçu social GitHub) et 1500×1000 (vignette Devpost 3:2).
+   Tout est en unités du viewport : on la rend à la taille voulue. */
+:root {
+  --bg: #F3F2EE; --fg: #0B0D10; --fg-2: rgba(11,13,16,.64); --fg-3: rgba(11,13,16,.42);
+  --hair: rgba(11,13,16,.12); --hair-2: rgba(11,13,16,.22); --acc: #E2621A; --acc-2: #0A86B5;
+  --u: min(1vw, 2vh);
+}
+* { box-sizing: border-box; margin: 0; }
+html, body { width: 100vw; height: 100vh; overflow: hidden; }
+body { background: var(--bg); color: var(--fg); font-family: Geist, Inter, sans-serif; -webkit-font-smoothing: antialiased; position: relative; }
+
+/* cadre technique en filets, comme la planche 01 */
+.frame { position: absolute; inset: calc(var(--u) * 2.4); border: 1px solid var(--hair-2); }
+.frame::before, .frame::after { content: ""; position: absolute; width: calc(var(--u) * 1.4); height: calc(var(--u) * 1.4); border: 1.5px solid var(--fg); }
+.frame::before { left: -1px; top: -1px; border-right: 0; border-bottom: 0; }
+.frame::after { right: -1px; bottom: -1px; border-left: 0; border-top: 0; }
+.grid { position: absolute; inset: 0; background-image: linear-gradient(var(--hair) 1px, transparent 1px), linear-gradient(90deg, var(--hair) 1px, transparent 1px); background-size: calc(var(--u) * 6) calc(var(--u) * 6); mask-image: radial-gradient(80% 80% at 78% 50%, #000 0, transparent 75%); opacity: .55; }
+.hatch { position: absolute; left: calc(var(--u) * 2.4); right: calc(var(--u) * 2.4); bottom: calc(var(--u) * 2.4); height: calc(var(--u) * 1.6); border-top: 1px solid var(--hair-2); background: repeating-linear-gradient(-45deg, var(--hair-2) 0 1px, transparent 1px 7px); }
+
+.copy { position: absolute; left: calc(var(--u) * 6); top: 0; bottom: 0; width: 46%; display: flex; flex-direction: column; justify-content: center; gap: calc(var(--u) * 2.4); z-index: 2; }
+.brand { display: flex; align-items: center; gap: calc(var(--u) * 1); }
+.brand svg { width: calc(var(--u) * 3.4); height: calc(var(--u) * 3.4); }
+.brand b { font: 600 calc(var(--u) * 2.3)/1 Geist; letter-spacing: -.035em; }
+.chip { display: inline-flex; align-items: center; gap: calc(var(--u) * .7); align-self: flex-start; padding: calc(var(--u) * .7) calc(var(--u) * 1.2); border: 1px solid var(--hair-2); border-radius: 99px; font: 500 calc(var(--u) * 1.15)/1 "Geist Mono"; letter-spacing: .1em; text-transform: uppercase; color: var(--fg-2); background: rgba(255,255,255,.5); }
+.chip i { width: calc(var(--u) * .8); height: calc(var(--u) * .8); border-radius: 50%; background: var(--acc); box-shadow: 0 0 0 calc(var(--u) * .35) rgba(226,98,26,.18); }
+h1 { font: 600 calc(var(--u) * 6.1)/.98 Geist; letter-spacing: -.055em; }
+h1 em { font: italic 400 1.08em/1 "Instrument Serif"; letter-spacing: -.02em; color: var(--acc); }
+p.sub { font: 400 calc(var(--u) * 1.75)/1.4 Geist; color: var(--fg-2); max-width: 30em; }
+.facts { display: flex; gap: calc(var(--u) * 2.4); font: 500 calc(var(--u) * 1.15)/1.3 "Geist Mono"; color: var(--fg-3); letter-spacing: .04em; text-transform: uppercase; }
+.facts b { display: block; font: 600 calc(var(--u) * 1.6)/1.2 Geist; color: var(--fg); letter-spacing: -.01em; text-transform: none; }
+
+/* deux apps posées sur le même os, en perspective */
+.stage { position: absolute; right: calc(var(--u) * -2); top: 0; bottom: 0; width: 56%; perspective: calc(var(--u) * 140); z-index: 1; }
+.shot { position: absolute; border-radius: calc(var(--u) * 1.4); overflow: hidden; background: #000; box-shadow: 0 calc(var(--u) * 4) calc(var(--u) * 8) calc(var(--u) * -3) rgba(30,20,10,.45), 0 0 0 1px rgba(11,13,16,.12); }
+.shot img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: left top; }
+.shot.orb { width: 74%; aspect-ratio: 16/10; left: 10%; top: 10%; transform: rotateY(-18deg) rotateX(6deg) rotateZ(1deg); }
+.shot.fl { width: 70%; aspect-ratio: 16/9; left: 26%; top: 47%; transform: rotateY(-18deg) rotateX(6deg) rotateZ(1deg); }
+.tag { position: absolute; z-index: 3; display: flex; align-items: center; gap: calc(var(--u) * .7); padding: calc(var(--u) * .65) calc(var(--u) * 1.1); border-radius: 99px; background: var(--fg); color: var(--bg); font: 500 calc(var(--u) * 1.1)/1 "Geist Mono"; letter-spacing: .06em; white-space: nowrap; }
+.tag i { width: calc(var(--u) * .9); height: calc(var(--u) * .9); border-radius: 50%; }
+.tag.t1 { left: 50%; top: 9%; } .tag.t1 i { background: radial-gradient(circle at 32% 28%, #FFE3C8 0, #F58A5A 38%, #E0573A 70%); }
+.tag.t2 { right: 6%; bottom: 10%; } .tag.t2 i { background: #7DD3FC; box-shadow: 0 0 calc(var(--u) * .8) #38BDF8; }
+
+/* format large (2:1, GitHub) : titre plus serré, captures plus à droite */
+@media (min-aspect-ratio: 9/5) {
+  .copy { width: 44%; gap: calc(var(--u) * 2); }
+  h1 { font-size: calc(var(--u) * 5.3); }
+  p.sub { font-size: calc(var(--u) * 1.6); }
+  .stage { width: 50%; right: calc(var(--u) * -3); }
+  .shot.orb { width: 80%; left: 12%; top: 12%; }
+  .shot.fl { width: 74%; left: 24%; top: 50%; }
+  .tag.t1 { left: 40%; top: 8%; }
+}
+/* format haut (3:2, Devpost) : on garde tout dans le cadre */
+@media (max-aspect-ratio: 8/5) {
+  .copy { width: 52%; }
+  h1 { font-size: calc(var(--u) * 6.6); }
+  .shot.orb { width: 70%; left: 8%; top: 16%; }
+  .shot.fl { width: 66%; left: 22%; top: 50%; }
+  .tag.t1 { left: 40%; top: 11%; }
+  .tag.t2 { right: 8%; bottom: 12%; }
+}
+</style>
+</head>
+<body>
+<div class="grid"></div>
+<div class="frame"></div>
+<div class="hatch"></div>
+
+<section class="copy">
+  <div class="brand">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><g transform="rotate(-35 16 16)" fill="currentColor"><circle cx="7.4" cy="13.1" r="3.7"/><circle cx="7.4" cy="18.9" r="3.7"/><circle cx="24.6" cy="13.1" r="3.7"/><circle cx="24.6" cy="18.9" r="3.7"/><rect x="7.2" y="13.3" width="17.6" height="5.4" rx="2.7"/></g><circle cx="16" cy="16" r="1.9" fill="var(--acc)"/></svg>
+    <b>bare bones</b>
+  </div>
+  <span class="chip"><i></i>Kiroween 2026 · Skeleton Crew</span>
+  <h1>Drop a spreadsheet. Share an <em>explorer.</em></h1>
+  <p class="sub">A lean skeleton for spreadsheet explorers. No server, no account: the whole view travels in one link.</p>
+  <div class="facts">
+    <span><b>2 apps</b>one skeleton</span>
+    <span><b>5 slots</b>to customise</span>
+    <span><b>0 lines</b>changed in core</span>
+  </div>
+</section>
+
+<section class="stage" aria-hidden="true">
+  <div class="shot orb"><img src="../reference/directions/png/budget-orb.png" alt=""></div>
+  <div class="shot fl"><img src="../reference/directions/png/club-floodlight.png" alt=""></div>
+  <span class="tag t1"><i></i>apps/nonprofit-budget</span>
+  <span class="tag t2"><i></i>apps/club-results</span>
+</section>
+</body>
+</html>
