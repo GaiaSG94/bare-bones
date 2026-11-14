@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Fern Street Budget (Orb) : une sphère granuleuse Activities, comme dans l'app. -->
+  <defs>
+    <radialGradient id="o" cx=".32" cy=".28" r=".8">
+      <stop offset="0" stop-color="#FFE3C8"/><stop offset=".38" stop-color="#F58A5A"/>
+      <stop offset=".7" stop-color="#E0573A"/><stop offset="1" stop-color="#B8402E"/>
+    </radialGradient>
+    <filter id="g" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .35 0" result="w"/>
+      <feComposite in="w" in2="SourceGraphic" operator="in" result="m"/>
+      <feBlend in="SourceGraphic" in2="m" mode="overlay"/>
+    </filter>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="#F4F3F0"/>
+  <circle cx="32" cy="32" r="22" fill="url(#o)" filter="url(#g)"/>
+</svg>

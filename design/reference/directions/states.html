@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Bare Bones · empty, import and broken-link states</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Inter+Tight:wght@300;400;600;800&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+<style>
+/* V2 (2026-11-14) — les états qui manquaient aux maquettes Orb et Floodlight :
+   A. budget vide (dépôt de fichier + « Load demo data »), B. import en cours puis lignes rejetées,
+   C. lien #bb= altéré ou mauvaise phrase de passe, D. club vide sur téléphone.
+   Chiffres et noms = exemples de maquette ; l'app affiche ses vraies valeurs. */
+:root {
+  --bg: #F4F3F0; --card: #FFFFFF; --soft: #F4F3F0; --soft-2: #EDEBE7;
+  --ink: #141414; --ink-2: rgba(20,20,20,.62); --ink-3: rgba(20,20,20,.42); --line: rgba(20,20,20,.07); --line-2: rgba(20,20,20,.13);
+  --pos: #1E8A5A; --neg: #D4512A;
+  --o-act: radial-gradient(circle at 32% 28%, #FFE3C8 0, #F58A5A 38%, #E0573A 70%, #B8402E);
+  --o-evt: radial-gradient(circle at 32% 28%, #F6DDFF 0, #B77BF0 40%, #7B4BD1 78%, #5A35A8);
+  --o-pre: radial-gradient(circle at 32% 28%, #D9EBFF 0, #7FA8F0 42%, #4D74D6 80%);
+  --o-fix: radial-gradient(circle at 32% 28%, #F3F1EC 0, #C9C4BA 45%, #9C968B 85%);
+  --o-gra: radial-gradient(circle at 32% 28%, #E1F7E9 0, #7FD3A6 42%, #2FA472 82%);
+  --o-due: radial-gradient(circle at 32% 28%, #FFF4C9 0, #F4D06A 42%, #D9A62A 85%);
+  --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --ice: #7DD3FC; --ice-2: #38BDF8; --fg: #EEF2F7; --fg-2: rgba(238,242,247,.68); --fg-3: rgba(238,242,247,.44);
+}
+* { box-sizing: border-box; margin: 0; }
+html, body { width: 1600px; height: 1120px; overflow: hidden; }
+body { font-family: Inter, sans-serif; background: #E9E7E2; color: var(--ink); -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; position: relative; }
+.orb { border-radius: 50%; position: relative; overflow: hidden; flex: none; display: inline-block; }
+.orb::after { content: ""; position: absolute; inset: 0; background-image: var(--noise); mix-blend-mode: overlay; opacity: .55; border-radius: 50%; }
+.cap { font: 500 10.5px/1 "Geist Mono", monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }
+.mono { font-family: "Geist Mono", monospace; }
+em.s { font: italic 400 1.1em/1 "Instrument Serif", serif; letter-spacing: -.01em; }
+
+/* en-tête de planche */
+.head { position: absolute; left: 60px; right: 60px; top: 34px; display: flex; align-items: baseline; justify-content: space-between; }
+.head h1 { font: 600 26px/1 Inter; letter-spacing: -.03em; }
+.head h1 em { font: italic 400 30px/1 "Instrument Serif"; }
+.head .cap { color: var(--ink-2); }
+.lbl { position: absolute; display: flex; gap: 10px; align-items: center; font: 500 11px/1 "Geist Mono"; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); }
+.lbl b { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--ink); color: #fff; font: 600 11px/1 "Geist Mono"; letter-spacing: 0; }
+
+/* panneaux Orb */
+.win { position: absolute; background: var(--bg); border-radius: 24px; overflow: hidden; box-shadow: 0 50px 100px -50px rgba(40,30,20,.45), 0 0 0 1px rgba(20,20,20,.06); }
+.bar { height: 48px; display: flex; align-items: center; gap: 12px; padding: 0 18px; border-bottom: 1px solid var(--line); }
+.back { display: inline-flex; align-items: center; gap: 7px; padding: 7px 11px; border-radius: 99px; background: var(--card); box-shadow: 0 0 0 1px var(--line-2); font: 500 12px/1 Inter; color: var(--ink-2); }
+.bar .ttl { font: 600 13px/1 Inter; } .bar .ttl small { font-weight: 400; color: var(--ink-3); margin-left: 6px; }
+.bar .sp { flex: 1; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 16px; border-radius: 12px; font: 500 13px/1 Inter; white-space: nowrap; }
+.btn.dark { background: var(--ink); color: #fff; }
+.btn.ghost { background: var(--card); box-shadow: 0 0 0 1px var(--line-2); color: var(--ink); }
+.btn.sm { padding: 8px 12px; font-size: 12px; border-radius: 10px; }
+
+/* A — budget vide */
+.A { left: 60px; top: 110px; width: 900px; height: 620px; }
+.drop { position: absolute; left: 28px; right: 28px; top: 76px; bottom: 28px; border-radius: 20px; background: var(--card); box-shadow: 0 0 0 1px var(--line); overflow: hidden; display: grid; grid-template-columns: 1.05fr 1fr; }
+.drop .l { padding: 34px 36px; display: flex; flex-direction: column; gap: 16px; position: relative; z-index: 1; }
+.drop h2 { font: 300 36px/1.04 Inter; letter-spacing: -.045em; }
+.drop h2 b { font-weight: 600; }
+.drop p { font: 400 14.5px/1.5 Inter; color: var(--ink-2); max-width: 30em; }
+.zone { margin-top: 4px; border: 1.5px dashed var(--line-2); border-radius: 16px; padding: 18px; display: flex; align-items: center; gap: 14px; background: linear-gradient(180deg, rgba(244,243,240,.6), rgba(244,243,240,0)); }
+.zone .ic { width: 42px; height: 42px; border-radius: 12px; background: var(--soft-2); display: grid; place-items: center; }
+.zone .t { flex: 1; font: 500 13.5px/1.35 Inter; } .zone .t span { display: block; font: 400 12px/1.4 Inter; color: var(--ink-3); }
+.cols { display: flex; flex-wrap: wrap; gap: 6px; }
+.cols span { padding: 5px 9px; border-radius: 8px; background: var(--soft); font: 500 11px/1 "Geist Mono"; color: var(--ink-2); }
+.cols span i { font-style: normal; color: var(--ink-3); }
+.row { display: flex; gap: 10px; align-items: center; }
+.safe { display: flex; gap: 9px; align-items: center; font: 400 12px/1.35 Inter; color: var(--ink-3); }
+.safe i { width: 8px; height: 8px; border-radius: 50%; background: var(--pos); box-shadow: 0 0 0 4px rgba(30,138,90,.14); flex: none; }
+.drop .r { position: relative; background: radial-gradient(90% 80% at 60% 45%, #FBFAF8 0, #F1EFEB 70%); }
+.ghost-orb { position: absolute; opacity: .9; }
+.ghost-orb.dim { opacity: .28; filter: grayscale(.6) blur(.4px); }
+.ghost-lab { position: absolute; font: 500 10.5px/1.25 "Geist Mono"; color: var(--ink-3); letter-spacing: .04em; }
+.ghost-lab b { display: block; font: 500 12.5px/1.2 Inter; color: var(--ink-2); letter-spacing: 0; }
+.demo-card { position: absolute; right: 22px; bottom: 22px; left: 22px; padding: 14px 16px; border-radius: 14px; background: rgba(255,255,255,.82); backdrop-filter: blur(10px); box-shadow: 0 0 0 1px var(--line), 0 18px 40px -24px rgba(40,30,20,.35); display: flex; align-items: center; gap: 12px; }
+.demo-card .t { flex: 1; font: 500 12.5px/1.35 Inter; } .demo-card .t span { display: block; font: 400 11.5px/1.35 Inter; color: var(--ink-3); }
+
+/* B — import en cours, puis lignes rejetées */
+.B { left: 990px; top: 110px; width: 550px; height: 620px; }
+.prog { position: absolute; left: 24px; right: 24px; top: 72px; padding: 20px; border-radius: 18px; background: var(--card); box-shadow: 0 0 0 1px var(--line); }
+.prog .top { display: flex; justify-content: space-between; align-items: baseline; }
+.prog .top b { font: 600 15px/1 Inter; }
+.prog .top span { font: 500 11px/1 "Geist Mono"; color: var(--ink-3); }
+.track { margin-top: 14px; height: 10px; border-radius: 99px; background: var(--soft-2); overflow: hidden; position: relative; }
+.track i { position: absolute; left: 0; top: 0; bottom: 0; width: 68%; border-radius: 99px; background: linear-gradient(90deg, #F58A5A, #B77BF0 55%, #7FA8F0); }
+.track i::after { content: ""; position: absolute; inset: 0; background-image: var(--noise); mix-blend-mode: overlay; opacity: .6; }
+.steps { margin-top: 16px; display: grid; gap: 9px; }
+.steps div { display: flex; gap: 10px; align-items: center; font: 400 12.5px/1.2 Inter; color: var(--ink-2); }
+.steps div i { width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; font: 600 10px/1 Inter; font-style: normal; color: #fff; flex: none; }
+.steps .ok i { background: var(--pos); } .steps .now i { background: var(--ink); } .steps .wait i { background: var(--soft-2); color: var(--ink-3); }
+.steps .now { color: var(--ink); font-weight: 500; }
+.steps span { margin-left: auto; font: 500 11px/1 "Geist Mono"; color: var(--ink-3); }
+.result { position: absolute; left: 24px; right: 24px; top: 300px; padding: 18px 20px; border-radius: 18px; background: var(--card); box-shadow: 0 0 0 1px var(--line); }
+.result .top { display: flex; align-items: center; gap: 10px; }
+.result .top b { font: 600 15px/1 Inter; flex: 1; }
+.pill { padding: 5px 9px; border-radius: 99px; font: 500 11px/1 "Geist Mono"; }
+.pill.ok { background: rgba(30,138,90,.1); color: var(--pos); } .pill.no { background: rgba(212,81,42,.1); color: var(--neg); }
+.rej { margin-top: 12px; display: grid; gap: 8px; }
+.rej div { padding: 10px 12px; border-radius: 12px; background: var(--soft); display: grid; grid-template-columns: 74px 1fr auto; gap: 10px; align-items: center; }
+.rej .n { white-space: nowrap; font: 500 11px/1 "Geist Mono"; color: var(--ink-3); }
+.rej code { font: 500 11.5px/1.3 "Geist Mono"; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rej code u { text-decoration: none; background: rgba(212,81,42,.14); color: var(--neg); border-radius: 4px; padding: 0 3px; }
+.rej b { font: 500 11.5px/1 Inter; color: var(--neg); }
+
+/* C — lien altéré / mauvaise phrase de passe */
+.C { left: 60px; top: 776px; width: 900px; height: 310px; }
+.C .body { position: absolute; left: 28px; right: 28px; top: 70px; bottom: 26px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.alert { border-radius: 18px; background: var(--card); box-shadow: 0 0 0 1px var(--line); padding: 18px 22px; display: flex; flex-direction: column; gap: 10px; position: relative; overflow: hidden; }
+.alert .k { display: flex; gap: 10px; align-items: center; }
+.alert h3 { font: 600 17px/1.15 Inter; letter-spacing: -.02em; }
+.alert p { font: 400 12.5px/1.45 Inter; color: var(--ink-2); }
+.alert .url { font: 500 11px/1.3 "Geist Mono"; color: var(--ink-3); padding: 8px 10px; border-radius: 10px; background: var(--soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.alert .url u { text-decoration: none; color: var(--neg); background: rgba(212,81,42,.12); border-radius: 4px; padding: 0 3px; }
+.alert .row { margin-top: 4px; }
+.crack { position: absolute; right: -36px; top: -36px; width: 120px; height: 120px; opacity: .9; }
+.alert.dark { background: #141414; color: #fff; box-shadow: none; }
+.alert.dark p { color: rgba(255,255,255,.62); }
+.pass { display: flex; gap: 8px; }
+.pass span { flex: 1; padding: 11px 12px; border-radius: 11px; background: rgba(255,255,255,.07); box-shadow: inset 0 0 0 1px rgba(239,68,68,.6); font: 500 13px/1 "Geist Mono"; letter-spacing: .18em; color: rgba(255,255,255,.8); }
+.alert.dark .err { font: 500 11.5px/1.3 Inter; color: #F59A80; }
+.alert.dark .btn.ghost { background: rgba(255,255,255,.08); color: #fff; box-shadow: none; }
+.alert.dark .btn.light { background: #fff; color: #141414; }
+
+/* D — club vide, téléphone Floodlight */
+.D { position: absolute; left: 990px; top: 776px; width: 550px; height: 310px; border-radius: 24px; overflow: hidden; background: #05070C; box-shadow: 0 50px 100px -50px rgba(5,7,12,.7); }
+.D .bg { position: absolute; inset: -20px; background: url("png/fl-bg.png") center 40% / cover; filter: blur(3px) saturate(.9); transform: scale(1.04); }
+.D .fade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(5,7,12,.94) 0, rgba(5,7,12,.72) 46%, rgba(5,7,12,.2) 100%), radial-gradient(80% 60% at 70% -10%, rgba(56,189,248,.25), transparent 60%); }
+.D .grain { position: absolute; inset: 0; background-image: var(--noise); opacity: .14; mix-blend-mode: overlay; }
+.D .txt { position: absolute; left: 30px; top: 30px; width: 270px; color: var(--fg); font-family: "Inter Tight", Inter, sans-serif; }
+.D .txt .cap { color: var(--ice); }
+.D h3 { margin-top: 12px; font: 800 36px/.95 "Inter Tight"; letter-spacing: -.05em; }
+.D h3 span { font-weight: 300; color: var(--ice); }
+.D p { margin-top: 10px; font: 400 12.5px/1.45 "Inter Tight"; color: var(--fg-2); }
+.D .row { margin-top: 16px; }
+.D .btn.ice { background: var(--ice); color: #05070C; font-family: "Inter Tight"; font-weight: 600; box-shadow: 0 8px 26px -8px rgba(56,189,248,.8); }
+.D .btn.glass { background: rgba(238,242,247,.08); color: var(--fg); box-shadow: inset 0 0 0 1px rgba(238,242,247,.16); font-family: "Inter Tight"; }
+.D .back { position: absolute; left: 30px; bottom: 20px; background: rgba(238,242,247,.08); color: var(--fg-2); box-shadow: inset 0 0 0 1px rgba(238,242,247,.14); }
+.phone { position: absolute; right: 34px; top: 26px; width: 168px; height: 330px; border-radius: 30px; padding: 8px; background: linear-gradient(160deg, #2A3140, #0B0F17); box-shadow: 0 30px 60px -20px rgba(0,0,0,.8), inset 0 0 0 1px rgba(255,255,255,.08); }
+.phone .scr { width: 100%; height: 100%; border-radius: 23px; overflow: hidden; background: radial-gradient(120% 55% at 50% -5%, rgba(56,189,248,.3), rgba(56,189,248,0) 60%), linear-gradient(180deg, #0A1120, #05070C); padding: 18px 12px; color: var(--fg); font-family: "Inter Tight"; position: relative; }
+.phone h6 { font: 800 17px/1 "Inter Tight"; letter-spacing: -.05em; }
+.phone h6 span { font-weight: 300; color: var(--ice); }
+.phone .s { margin-top: 4px; font: 500 8.5px/1 "Geist Mono"; color: var(--fg-3); letter-spacing: .08em; text-transform: uppercase; }
+.slot { margin-top: 7px; height: 22px; border-radius: 8px; background: rgba(238,242,247,.04); box-shadow: inset 0 0 0 1px rgba(238,242,247,.06); display: flex; align-items: center; gap: 7px; padding: 0 8px; }
+.slot i { width: 9px; height: 11px; background: rgba(238,242,247,.12); clip-path: polygon(0 0,100% 0,100% 62%,50% 100%,0 62%); }
+.slot u { flex: 1; height: 5px; border-radius: 4px; background: rgba(238,242,247,.08); }
+.slot.first { background: linear-gradient(90deg, rgba(56,189,248,.18), rgba(56,189,248,.03)); box-shadow: inset 0 0 0 1px rgba(125,211,252,.28); }
+.phone .ft { position: absolute; left: 12px; right: 12px; bottom: 16px; padding: 9px; border-radius: 10px; text-align: center; background: var(--ice); color: #05070C; font: 600 10px/1 "Inter Tight"; }
+</style>
+</head>
+<body>
+<header class="head">
+  <h1>States the mock-ups were missing: <em>empty, importing, broken.</em></h1>
+  <span class="cap">Bare Bones · design V2 · 2026-11-14 · Orb + Floodlight</span>
+</header>
+
+<span class="lbl" style="left:60px;top:86px"><b>A</b>Budget · first visit, no data</span>
+<span class="lbl" style="left:990px;top:86px"><b>B</b>Budget · import running, then result</span>
+<span class="lbl" style="left:60px;top:752px"><b>C</b>Shared link · tampered, or wrong passphrase</span>
+<span class="lbl" style="left:990px;top:752px"><b>D</b>Club · first visit, no season yet</span>
+
+<!-- A -->
+<section class="win A">
+  <div class="bar">
+    <span class="back">← Bare Bones</span>
+    <i class="orb" style="width:20px;height:20px;background:var(--o-act)"></i>
+    <span class="ttl">Fern Street<small>Neighbourhood association</small></span>
+    <span class="sp"></span>
+    <span class="cap">No data yet</span>
+  </div>
+  <div class="drop">
+    <div class="l">
+      <span class="cap">Step 1 of 1 · bring your ledger</span>
+      <h2>Drop a spreadsheet, <b>see where the money <em class="s">went.</em></b></h2>
+      <p>Your CSV is read in this browser. Nothing is uploaded, there is no account, and you can share the result with one link.</p>
+      <div class="zone">
+        <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M7.5 8.5 12 4l4.5 4.5"/><path d="M4 15v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V15"/></svg></span>
+        <div class="t">Drop a .csv file here<span>or paste from your spreadsheet · up to 50,000 rows</span></div>
+        <span class="btn ghost sm">Choose a file</span>
+      </div>
+      <div class="cols"><span>date <i>YYYY-MM-DD</i></span><span>label</span><span>category</span><span>amount <i>−12.50</i></span><span><i>+ plan.csv, optional</i></span></div>
+      <div class="safe"><i></i>Your data stays here. Close the tab and it is gone.</div>
+    </div>
+    <div class="r">
+      <span class="ghost-orb orb dim" style="left:58px;top:48px;width:150px;height:150px;background:var(--o-act)"></span>
+      <span class="ghost-orb orb dim" style="left:212px;top:34px;width:96px;height:96px;background:var(--o-evt)"></span>
+      <span class="ghost-orb orb dim" style="left:196px;top:150px;width:74px;height:74px;background:var(--o-pre)"></span>
+      <span class="ghost-orb orb dim" style="left:300px;top:128px;width:52px;height:52px;background:var(--o-gra)"></span>
+      <span class="ghost-orb orb dim" style="left:118px;top:210px;width:44px;height:44px;background:var(--o-fix)"></span>
+      <span class="ghost-orb orb dim" style="left:286px;top:206px;width:34px;height:34px;background:var(--o-due)"></span>
+      <span class="ghost-lab" style="left:62px;top:262px"><b>Your categories</b>become spheres, sized by spend</span>
+      <div class="demo-card">
+        <i class="orb" style="width:34px;height:34px;background:var(--o-gra)"></i>
+        <div class="t">Just looking?<span>A full sample year for a small association.</span></div>
+        <span class="btn dark sm">Load demo data</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- B -->
+<section class="win B">
+  <div class="bar">
+    <span class="ttl">ledger-2026.csv<small>418 KB</small></span>
+    <span class="sp"></span>
+    <span class="btn ghost sm">Cancel</span>
+  </div>
+  <div class="prog">
+    <div class="top"><b>Reading your spreadsheet…</b><span>2,140 / 3,150 rows</span></div>
+    <div class="track"><i></i></div>
+    <div class="steps">
+      <div class="ok"><i>✓</i>Columns recognised<span>date · label · category · amount</span></div>
+      <div class="now"><i>2</i>Checking every row<span>in a background worker</span></div>
+      <div class="wait"><i>3</i>Building the explorer</div>
+    </div>
+  </div>
+  <div class="result">
+    <div class="top"><b>Ready. 3,147 rows in your explorer.</b><span class="pill ok">3,147 kept</span><span class="pill no">3 set aside</span></div>
+    <div class="rej">
+      <div><span class="n">row 812</span><code>2026-02-<u>31</u>;Bake sale;Events;240</code><b>Date does not exist</b></div>
+      <div><span class="n">row 1,406</span><code>2026-05-02;Paint;Premises;<u>12,5O</u></code><b>Amount is not a number</b></div>
+      <div><span class="n">row 2,977</span><code><u>;;;</u></code><b>Empty row, skipped</b></div>
+    </div>
+    <div class="row" style="margin-top:14px"><span class="btn dark sm">Open the explorer</span><span class="btn ghost sm">Download rejected rows</span></div>
+  </div>
+</section>
+
+<!-- C -->
+<section class="win C">
+  <div class="bar">
+    <span class="back">← Bare Bones</span>
+    <span class="ttl">Opened from a shared link</span>
+    <span class="sp"></span>
+    <span class="cap">Nothing was loaded</span>
+  </div>
+  <div class="body">
+    <div class="alert">
+      <svg class="crack" viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" fill="none" stroke="rgba(212,81,42,.18)" stroke-width="10"/><path d="M60 8 52 40l14 10-10 22 8 40" fill="none" stroke="#D4512A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="k"><span class="pill no">Public link</span></div>
+      <h3>This link was changed or cut short.</h3>
+      <p>Part of it is missing, so we can't rebuild the view. Your own data is safe: nothing was loaded or replaced.</p>
+      <div class="url">…/budget/#bb=1.eNq9V0tv4zYQ<u>…</u></div>
+      <div class="row"><span class="btn dark sm">Ask for a new link</span><span class="btn ghost sm">Open an empty explorer</span></div>
+    </div>
+    <div class="alert dark">
+      <div class="k"><span class="pill" style="background:rgba(255,255,255,.1);color:#fff">Private · encrypted</span></div>
+      <h3>Enter the passphrase you were given.</h3>
+      <div class="pass"><span>••••••••••</span><b class="btn light sm" style="flex:none;letter-spacing:0;font-family:Inter">Unlock</b></div>
+      <span class="err">That passphrase doesn't open this link. Check it with the treasurer.</span>
+      <p>It is checked in this browser only. We never see it and can't reset it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- D -->
+<section class="D">
+  <div class="bg"></div><div class="fade"></div><div class="grain"></div>
+  <div class="txt">
+    <span class="cap">Riverside Six · Season 2026</span>
+    <h3>No match<br><span>played yet.</span></h3>
+    <p>Drop the results sheet and the league table, team pages and form streaks build themselves.</p>
+    <div class="row"><span class="btn ice sm">Load demo season</span><span class="btn glass sm">Drop results.csv</span></div>
+  </div>
+  <span class="back">← Bare Bones</span>
+  <div class="phone"><div class="scr">
+    <h6>League <span>table</span></h6>
+    <p class="s">6 teams · 0 played</p>
+    <div class="slot first"><i></i><u></u></div><div class="slot"><i></i><u></u></div><div class="slot"><i></i><u></u></div>
+    <div class="slot"><i></i><u></u></div><div class="slot"><i></i><u></u></div><div class="slot"><i></i><u></u></div>
+    <span class="ft">Load demo season</span>
+  </div></div>
+</section>
+</body>
+</html>

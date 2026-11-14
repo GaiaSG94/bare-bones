@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Riverside Six (Floodlight) : écusson bleu glacé sur nuit, halo de projecteur. -->
+  <defs>
+    <radialGradient id="h" cx=".5" cy="0" r="1">
+      <stop offset="0" stop-color="#38BDF8" stop-opacity=".55"/><stop offset=".6" stop-color="#38BDF8" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="s" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7DD3FC"/><stop offset="1" stop-color="#0EA5E9"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="#05070C"/>
+  <rect width="64" height="64" rx="15" fill="url(#h)"/>
+  <path d="M32 9 50 14v15c0 11.5-7.6 19.2-18 23C21.6 48.2 14 40.5 14 29V14z" fill="url(#s)"/>
+  <text x="32" y="38" text-anchor="middle" font-family="Inter Tight, Inter, Arial, sans-serif" font-weight="800" font-size="17" fill="#05070C">R6</text>
+</svg>
