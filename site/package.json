@@ -1,0 +1,20 @@
+{
+  "name": "@bare-bones/site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Bare Bones home page: the landing page of the skeleton, built from the same design references as the apps.",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3",
+    "vite": "^6.0.7"
+  },
+  "dependencies": {
+    "three": "^0.160.0"
+  }
+}

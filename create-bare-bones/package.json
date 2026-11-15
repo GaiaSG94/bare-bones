@@ -1,0 +1,14 @@
+{
+  "name": "create-bare-bones",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Create a new Bare Bones app from the minimal skeleton.",
+  "license": "MIT",
+  "bin": {
+    "create-bare-bones": "./index.mjs"
+  },
+  "scripts": {
+    "test": "node --test"
+  }
+}

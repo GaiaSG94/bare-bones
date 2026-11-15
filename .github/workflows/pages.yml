@@ -1,0 +1,59 @@
+name: pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build the two apps and the skeleton
+        run: |
+          pnpm --filter @bare-bones/nonprofit-budget build
+          pnpm --filter @bare-bones/club-results build
+          pnpm --filter @bare-bones/skeleton build
+      - name: Measure the real numbers
+        run: node tools/metrics.mjs
+      - name: Build the home page
+        run: pnpm --filter @bare-bones/site build
+      - name: Assemble the site (/, /budget/, /club/, /skeleton/)
+        run: |
+          mkdir -p public/budget public/club public/skeleton
+          cp -r site/dist/. public/
+          cp -r apps/nonprofit-budget/dist/. public/budget/
+          cp -r apps/club-results/dist/. public/club/
+          cp -r skeleton/dist/. public/skeleton/
+          cp site/metrics.json public/metrics.json
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -4,6 +4,7 @@ coverage/
 *.tsbuildinfo
 .vite/
 test-results/
+.e2e-dist/
 playwright-report/
 .DS_Store
 Thumbs.db

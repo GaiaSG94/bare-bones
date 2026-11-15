@@ -1,5 +1,19 @@
 # STATUS — kiroween-bare-bones
 
+## Session 2026-11-15 (opencode), étapes 6 à 9
+
+- Phase : build (étapes 1-9/9 — dernière étape de code).
+- **Étape 6 — `site/`** : page d'accueil tirée de la planche-01 (moteur 3D de fils, scenario 9 étapes, themes Paper/Ink/Orbit, Paper par defaut, bandeau des 6 acteurs) ; les deux cartes pointent vers les **vraies apps** (`./budget/`, `./club/`) ; tous les chiffres sont lus dans `site/metrics.json` (produit par `tools/metrics.mjs`) ; favicon `favicon-bare-bones.svg`, `og:image`/`twitter:image` = `social-preview-1280x640.png` ; la scene 3D est un **chunk lazy** (126,3 ko gzip, mesures a part).
+- **Étape 7 — gardes, budgets, Playwright, Pages** :
+  - `tools/guard.mjs` : API publique seulement, pas de `dangerouslySetInnerHTML`, **no-sound**, et **core/ui geles** par hash (`tools/core-ui.sha256`, 66 fichiers) ;
+  - `tools/budget.mjs` : plafonds de lignes + **gzip <= 200 ko par site**, scene 3D comptee a part (home 10,2 ko ; budget 116,9 ko ; club 111,7 ko ; skeleton 95,2 ko) ;
+  - Playwright : **19 tests verts** (etats A/B/C/D, scenario 9 etapes, lien #bb= copie -> reouvert dans un nouveau contexte -> meme vue, lien altere -> repli, squelette) ;
+  - workflow `pages.yml` : build des 4 sites, assemblage `/`, `/budget/`, `/club/`, `/skeleton/`, deploiement GitHub Pages.
+- **Étape 8 — CLI, power, doctor** : `create-bare-bones` (copie le squelette, renomme le package et l'id de config) ; `power/bare-bones` (POWER.md, skill `new-explorer-app`, 2 jeux de donnees, rubric de relecture) ; `tools/doctor.mjs` (node, pnpm, liens, manifeste geles, gardes, budgets, builds).
+- **Étape 9 — livrables** : `README.md` (pitch, URLs, « Two apps, one skeleton » avec le diff vide, install, chiffres de `metrics.json`), `KIRO.md` (specs, steering, hooks, PBT, power, IDE vs CLI, MCP), `DEVPOST.md`, `VIDEO.md` (script < 3 min).
+- Verifications : 77 tests unitaires verts (12 fichiers, 16 proprietes PBT, seed 20261111) ; typecheck des 5 paquets OK ; budgets et gardes OK ; 19 tests E2E verts (1,2 min) ; doctor OK.
+- Reste : premiere publication Pages + verification des 4 URLs en 200 ; credits Kiro a demander avant le 1 decembre 12:00 PT ; upload de la video sur YouTube.
+
 ## Session 2026-11-15 (opencode), étape 5 bis
 
 - Phase : build (étapes 1-5 bis/9).

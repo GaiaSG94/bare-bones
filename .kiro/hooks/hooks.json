@@ -1,0 +1,34 @@
+{
+  "hooks": [
+    {
+      "name": "test-on-save",
+      "version": "1",
+      "when": { "type": "fileSave", "patterns": ["**/*.ts", "**/*.tsx"] },
+      "then": {
+        "type": "runCommand",
+        "command": "pnpm exec vitest run --changed",
+        "description": "Run the tests of the changed packages on save."
+      }
+    },
+    {
+      "name": "budget-guard",
+      "version": "1",
+      "when": { "type": "fileSave", "patterns": ["**/src/**", "site/**"] },
+      "then": {
+        "type": "runCommand",
+        "command": "node tools/budget.mjs",
+        "description": "Fail fast when a line or gzip budget is exceeded."
+      }
+    },
+    {
+      "name": "public-api-guard",
+      "version": "1",
+      "when": { "type": "fileSave", "patterns": ["apps/**", "skeleton/**", "site/**"] },
+      "then": {
+        "type": "runCommand",
+        "command": "node tools/guard.mjs",
+        "description": "Public API only, frozen core/ui, no sound, no unescaped HTML."
+      }
+    }
+  ]
+}

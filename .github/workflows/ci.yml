@@ -39,4 +39,9 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm --filter @bare-bones/nonprofit-budget build
+      - run: pnpm --filter @bare-bones/club-results build
+      - run: pnpm --filter @bare-bones/skeleton build
+      - run: node tools/metrics.mjs
+      - run: pnpm --filter @bare-bones/site build
       - run: pnpm run e2e

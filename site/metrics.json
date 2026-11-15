@@ -1,12 +1,12 @@
 {
-  "measuredAt": "2026-11-13T22:10:48.630Z",
+  "measuredAt": "2026-11-15T14:11:58.252Z",
   "packages": {
     "core": {
-      "lines": 1498,
+      "lines": 1578,
       "ceiling": 3300
     },
     "ui": {
-      "lines": 1824,
+      "lines": 2595,
       "ceiling": 4400
     },
     "skeleton": {
@@ -14,10 +14,20 @@
       "ceiling": 300
     }
   },
+  "apps": {
+    "nonprofit-budget": {
+      "lines": 567,
+      "ceiling": 600
+    },
+    "club-results": {
+      "lines": 571,
+      "ceiling": 600
+    }
+  },
   "tests": {
-    "files": 10,
-    "cases": 61,
-    "pbtProperties": 13,
+    "files": 12,
+    "cases": 77,
+    "pbtProperties": 16,
     "pbtSeed": 20261111
   },
   "runtimeDependencies": [
@@ -26,11 +36,29 @@
     "react-dom"
   ],
   "siteSizes": {
-    "home": null,
-    "budget": null,
-    "club": null,
-    "note": "measured at first build (step 7)"
+    "home": 10478,
+    "budget": 119700,
+    "club": 114445,
+    "skeleton": null,
+    "note": "gzipped JS+CSS+HTML per site; lazy 3D chunks listed apart"
   },
-  "ciDurationSeconds": null,
-  "ciNote": "measured via the GitHub API at step 7"
+  "scene3d": {
+    "home": 129284,
+    "club": 125063
+  },
+  "demo": {
+    "budget": {
+      "rows": 99,
+      "rejected": 2,
+      "income": 9956,
+      "expenses": 15474,
+      "balance": -5518
+    },
+    "club": {
+      "leader": "Castors",
+      "leaderPoints": 22,
+      "nextWeek": 9
+    }
+  },
+  "ciDurationSeconds": 72
 }

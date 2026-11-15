@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bare Bones — Drop a spreadsheet. Share an explorer.</title>
+<meta name="description" content="Bare Bones turns a plain CSV into a typed table, filters, charts and a share link. Everything happens in the browser: no server, no account.">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<meta property="og:title" content="Bare Bones — Drop a spreadsheet. Share an explorer.">
+<meta property="og:description" content="A copy-ready data explorer skeleton: two apps, one skeleton, zero server. Kiroween 2026, Skeleton Crew.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="./social-preview-1280x640.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="./social-preview-1280x640.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
+</head>
+<body>
+
+<main class="site" id="site" data-bg="papier">
+  <div class="gl" id="gl"></div>
+  <div class="css3d" id="css3d"></div>
+  <div class="fallback" id="fallback" hidden><div><b>01 · The dev team copies <em>the skeleton.</em></b>One command: <code>pnpm create bare-bones</code>. The skeleton has five extension points and reads in about an hour.</div><div><b>02 · The treasurer gets <em>a raw bank export.</em></b>The neighbourhood association exports its accounts as CSV: three date formats, commas and dots mixed up.</div><div><b>03 · The file is read <em>in the browser.</em></b>Dropped into Bare Bones, it is parsed in the background: encoding, dates, numbers. Nothing is sent to a server.</div><div><b>04 · Every column <em>gets a type.</em></b>Date, text, category, amount. Rows that fail to parse stay visible in a separate panel.</div><div><b>05 · Filters and charts <em>build themselves.</em></b>Amount ranges, categories, search: totals and charts update on every click, with no chart library.</div><div><b>06 · The whole view fits <em>in one link.</em></b>Filters, sort order and chart are encoded in the URL's <code>#bb=</code> fragment, which never reaches the server.</div><div><b>07 · Members open <em>the same view.</em></b>On their phones, with no account and nothing to install, they see exactly what the treasurer prepared.</div><div><b>08 · Same skeleton, <em>a second app.</em></b>The sports club plugs match results, the league table and form streaks into the same five extension points. Not one line of the skeleton changes.</div><div><b>09 · The league table, <em>shared publicly.</em></b>After each match day the club posts a short public <code>#bb=</code> link. Players and parents open the table on their phones, no account needed.</div></div>
+  <div class="ui">
+    <div class="frame passive"></div>
+    <div class="rule passive" style="top:5.4cqw"></div>
+    <div class="hatch passive" style="top:5.4cqw"></div>
+    <span class="tick passive" style="left:2.8cqw;top:7.2cqw">BB-01</span>
+    <span class="tick passive" style="right:2.8cqw;top:7.2cqw">16:9 · 1600×900</span>
+    <div class="vline passive" style="left:49.5cqw;top:6.65cqw;bottom:8.4cqw"></div>
+    <header class="nav">
+      <a class="brand" href="index.html" aria-label="Bare Bones"><svg viewBox="0 0 32 32" aria-hidden="true"><g transform="rotate(-35 16 16)" fill="currentColor"><circle cx="7.4" cy="13.1" r="3.7"/><circle cx="7.4" cy="18.9" r="3.7"/><circle cx="24.6" cy="13.1" r="3.7"/><circle cx="24.6" cy="18.9" r="3.7"/><rect x="7.2" y="13.3" width="17.6" height="5.4" rx="2.7"/></g><circle cx="16" cy="16" r="1.9" fill="var(--acc)"/></svg><b>bare bones</b></a>
+      <nav class="menu" aria-label="Boards"><a aria-current="page">Overview</a><a aria-disabled="true">Pipeline</a><a aria-disabled="true">Architecture</a><a aria-disabled="true">Sharing</a><a aria-disabled="true">Numbers</a></nav>
+      <div class="right">
+        <span class="chip-tag">Kiroween 2026 <i>·</i> Skeleton Crew</span>
+        <div class="bgs" role="radiogroup" aria-label="Background"><span>Theme</span>
+          <button type="button" role="radio" aria-checked="false" data-bg="encre" style="--sw:#0B0E13">Ink</button>
+          <button type="button" role="radio" aria-checked="false" data-bg="papier" style="--sw:#F3F2EE">Paper</button>
+          <button type="button" role="radio" aria-checked="false" data-bg="orbite" style="--sw:radial-gradient(circle at 70% 120%,#9fc3ea 0 38%,#0b0f15 42%)">Orbit</button>
+        </div>
+        <button type="button" class="btn-dark" id="play-top">Play the scenario</button>
+      </div>
+    </header>
+    <section class="hero">
+      <span class="label">[ 01 — Overview ]</span>
+      <h1>Drop a spreadsheet.<br>Share an <em>explorer.</em></h1>
+      <p class="lead">Bare Bones turns a plain CSV into a typed table, filters, charts and a share link. Everything happens in the browser: no server, no account.</p>
+      <div class="cta">
+        <button type="button" class="pill" id="play">Play the scenario <span class="arr"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" d="m6 3 5 5-5 5"/></svg></span></button>
+        <span class="cta-meta">9 steps · about 65 s</span>
+      </div>
+      <div class="facts" id="bb-facts"></div>
+    </section>
+    <aside class="spec" aria-label="The problem and the answer">
+      <div><span class="label no">The problem</span><p>A community group is handed a spreadsheet. Nobody will open it, the usual tools are too heavy, and running a server is out of the question.</p></div>
+      <div><span class="label yes">The answer — Bare Bones</span><p>A copy-ready data explorer that runs in the browser and is shared with a single link. Zero server, zero account.</p></div>
+    </aside>
+    <nav class="apps" aria-label="The two apps built on this skeleton">
+      <div class="apps-h"><span class="label">Two apps · <b>one skeleton</b></span><span class="label">0 lines changed in core &amp; ui</span></div>
+      <a class="app orb" href="./budget/">
+        <i style="right:-2.2cqw;top:-2.6cqw;width:8.4cqw;height:8.4cqw;background:radial-gradient(circle at 34% 30%,#FFE3C8 0,#F58A5A 38%,#E0573A 70%,#B8402E)"></i>
+        <i style="right:5.2cqw;top:2.6cqw;width:2.6cqw;height:2.6cqw;background:radial-gradient(circle at 34% 30%,#F6DDFF 0,#B77BF0 40%,#7B4BD1 80%)"></i>
+        <i style="right:3.6cqw;top:5.6cqw;width:1.4cqw;height:1.4cqw;background:radial-gradient(circle at 34% 30%,#E1F7E9 0,#7FD3A6 42%,#2FA472 82%)"></i>
+        <span class="k">App 01 · Budget</span>
+        <b>Fern Street Budget</b>
+        <small>Association accounts · private, encrypted link</small>
+        <span class="ft"><span class="stat" data-stat="budget">Budget demo</span><span class="go">Preview →</span></span>
+      </a>
+      <a class="app flood" href="./club/">
+        <span class="k">App 02 · Club</span>
+        <b>Riverside Six</b>
+        <small>League table &amp; form · public link</small>
+        <span class="ft"><span class="stat" data-stat="club">League demo</span><span class="go">Preview →</span></span>
+      </a>
+    </nav>
+    <section class="cap" id="cap" hidden aria-live="polite" aria-label="Scenario step">
+      <div class="sc-ticks"></div>
+      <div class="row"><span class="num"></span><span class="who"></span>
+        <span class="ctrl"><button type="button" id="sc-prev" aria-label="Previous step"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M10 3 5 8l5 5"/></svg></button><button type="button" id="sc-pause" aria-label="Pause or play"></button><button type="button" id="sc-next" aria-label="Next step"></button><button type="button" class="sc-close" id="sc-close" aria-label="Leave the scenario">✕</button></span></div>
+      <div class="body"><h2></h2><p></p><div class="res"><span class="label">Result</span><span></span></div></div>
+    </section>
+    <footer class="cast" aria-label="Who is involved">
+      <div class="head"><span class="label">Who’s involved</span><span class="label">6 parties</span></div>
+      <div class="actor" data-actor="dev" style="--c:#4CC9F0"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 7 3.5 12l5 5M15.5 7l5 5-5 5"/></svg></span><span class="tx"><b>Dev team</b><small>copies the skeleton</small></span></div>
+      <div class="actor" data-actor="treso" style="--c:#FF8A3D"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7.5a5.5 5.5 0 1 0 0 9"/><path d="M5 10.5h8M5 13.5h8"/></svg></span><span class="tx"><b>Treasurer</b><small>local association</small></span></div>
+      <div class="actor" data-actor="membres" style="--c:#5BE3A4"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8.5" r="3"/><path d="M3.5 19c.4-3.2 2.7-5 5.5-5s5.1 1.8 5.5 5"/><circle cx="17" cy="9.5" r="2.3"/><path d="M15.8 14.1c2.4-.3 4.4 1.3 4.7 4.4"/></svg></span><span class="tx"><b>Members</b><small>just open a link</small></span></div>
+      <div class="actor" data-actor="club" style="--c:#F2C14E"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7"/></svg></span><span class="tx"><b>Sports club</b><small>6 teams, 1 league table</small></span></div>
+      <div class="actor" data-actor="kiro" style="--c:#9B8CFF"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l1.8 4.7 4.7 1.8-4.7 1.8L12 16.5l-1.8-4.7L5.5 10l4.7-1.8z"/><path d="M18.5 15.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg></span><span class="tx"><b>Kiro</b><small>Kiroween 2026 · power</small></span></div>
+      <div class="actor none" data-actor="none" style="--c:#FF6B6B"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4.5" width="16" height="6" rx="1"/><rect x="4" y="13.5" width="16" height="6" rx="1"/><path d="M3 21 21 3"/></svg></span><span class="tx"><b>Server</b><small>none: all stays local</small></span></div>
+    </footer>
+  </div>
+</main>
+
+<script type="module" src="./app.js"></script>
+</body>
+</html>

@@ -139,6 +139,19 @@ importers:
         specifier: ^3.2.4
         version: 3.2.7(@types/node@26.6.6)
 
+  site:
+    dependencies:
+      three:
+        specifier: ^0.160.0
+        version: 0.160.1
+    devDependencies:
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+      vite:
+        specifier: ^6.0.7
+        version: 6.4.6(@types/node@26.6.6)
+
   skeleton:
     dependencies:
       '@bare-bones/core':

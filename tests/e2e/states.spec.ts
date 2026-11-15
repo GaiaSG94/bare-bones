@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
-const BUDGET_URL = "http://localhost:4171/budget/";
-const CLUB_URL = "http://localhost:4172/club/";
+const BUDGET_URL = "http://localhost:4170/budget/";
+const CLUB_URL = "http://localhost:4170/club/";
 
 const CSV_WITH_BAD_ROWS = [
   "date;label;amount",
