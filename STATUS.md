@@ -20,7 +20,6 @@
 - Reste : v├®rifier les 4 URLs post-d├®ploiement + Gaia pose `social-preview-1280x640.png` dans Settings ÔåÆ Social preview.
 
 ## Session 2026-11-15 (opencode), ├®tape 5 bis
-## Session 2026-11-15 (opencode), ├®tape 5 bis
 
 - Phase : build (├®tapes 1-5 bis/9).
 - ├ëtape 5 bis FAITE ÔÇö les ├®tats de la V2 (spec `.kiro/specs/states-v2/`) :
