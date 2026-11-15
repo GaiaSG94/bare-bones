@@ -15,7 +15,7 @@
   "scripts": {
     "verify": "node tools/verify.mjs",
     "test": "vitest run",
-    "typecheck": "node node_modules/typescript/bin/tsc --noEmit -p packages/core/tsconfig.json && node node_modules/typescript/bin/tsc --noEmit -p packages/ui/tsconfig.json",
+    "typecheck": "node node_modules/typescript/bin/tsc --noEmit -p packages/core/tsconfig.json && node node_modules/typescript/bin/tsc --noEmit -p packages/ui/tsconfig.json && node node_modules/typescript/bin/tsc --noEmit -p skeleton/tsconfig.json && node node_modules/typescript/bin/tsc --noEmit -p apps/nonprofit-budget/tsconfig.json && node node_modules/typescript/bin/tsc --noEmit -p apps/club-results/tsconfig.json",
     "budget": "node tools/budget.mjs",
     "guard": "node tools/guard.mjs",
     "check": "node tools/verify.mjs && node node_modules/typescript/bin/tsc --noEmit -p packages/core/tsconfig.json && node node_modules/typescript/bin/tsc --noEmit -p packages/ui/tsconfig.json && vitest run && node tools/budget.mjs && node tools/guard.mjs"

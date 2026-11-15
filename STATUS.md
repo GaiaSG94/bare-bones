@@ -1,5 +1,19 @@
 # STATUS — kiroween-bare-bones
 
+## Session 2026-11-15 (opencode), étape 5
+
+- Phase : build (étapes 1-5/9).
+- Étape 5 FAITE : `apps/club-results` (597/600 lignes), design Floodlight :
+  - trois colonnes sur le stade de nuit : classement (écussons, ligne leader lumineuse, prochain match), page d'équipe (gros total, W/D/L/GD, forme, courbe cumulée, derniers résultats), partage public `#bb=` par défaut ;
+  - stade Three.js adapté de `design/reference/directions/stadium.js`, **chargé paresseusement** (chunk séparé, 125,06 ko gzip mesuré à part), repli `fl-bg.png` (compressée à ~844 ko) si WebGL absent ou échec ;
+  - données : pas d'open data compatible trouvée → saison de démo générée (double round-robin 6 équipes, semaines 1-8 jouées, 9-10 à venir), badge « Demo data » dans l'UI, `data/README.md` explicite ;
+  - cinq registres dans `explorer.config.ts` (importer, derivation, reducer, views, shareAdapter public), thème Floodlight déclaratif ; **0 ligne modifiée dans core et ui** ;
+  - `?demo=1` charge la saison automatiquement (captures/E2E) ; bouton « ← Bare Bones » ; colonnes empilées sur mobile.
+- Vérifications : 67 tests verts (11 fichiers) dont 7 club (PBT seed 20261111 : conservation des points, matchs joués égaux, tri stable), typecheck club OK, budgets OK (club 597/600), guards OK, build `/club/` OK (93,17 ko gzip JS + 2,25 ko CSS, scène 3D à part).
+- Specs ajoutées : `.kiro/specs/club-floodlight/` (requirements/design/tasks).
+- Vérifié par script Playwright : classement calculé (Castors 22 pts), page équipe interactive, canvas prêt, lien `#bb=v1.p…`, zéro erreur console.
+- Reste : états V2 (5 bis), site, Playwright CI, Pages, CLI/power, livrables.
+
 ## Session 2026-11-13 (opencode), étape 4
 
 - Phase : build (étapes 1-4/9).
