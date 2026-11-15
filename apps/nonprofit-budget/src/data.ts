@@ -2,16 +2,11 @@ import type { CellValue, Column, Table } from "@bare-bones/core";
 import { parseCsvText } from "@bare-bones/core";
 
 export const CATEGORIES = [
-  "Membership",
-  "Grants",
-  "Activities",
-  "Events",
-  "Premises",
-  "Fixed costs",
-  "Other",
+  "Membership", "Grants", "Activities", "Events", "Premises", "Fixed costs", "Other",
 ] as const;
 
 export type Category = (typeof CATEGORIES)[number];
+export type Row = Record<string, CellValue>;
 
 const RULES: readonly [RegExp, Category][] = [
   [/dues|membership|subscription/i, "Membership"],
@@ -40,18 +35,11 @@ export const COLUMNS: readonly Column[] = [
   { id: "amount", label: "Amount", type: "number", format: { kind: "number", decimals: 2, locale: "fr" } },
 ];
 
-export type Row = Record<string, CellValue>;
-
 /** Derivation: category by rules, month of the row. */
 export function derive(table: Table): Table {
   const rows = table.rows.map((row) => {
     const date = row["date"];
-    const label = String(row["label"] ?? "");
-    return {
-      ...row,
-      category: categorise(label),
-      month: date instanceof Date ? monthOf(date) : "",
-    };
+    return { ...row, category: categorise(String(row["label"] ?? "")), month: date instanceof Date ? monthOf(date) : "" };
   });
   return { ...table, columns: [...COLUMNS], rows };
 }
@@ -63,14 +51,7 @@ export function planRows(plan: Table): Row[] {
     const category = String(row["category"] ?? "Other");
     const planned = typeof row["planned"] === "number" ? row["planned"] : 0;
     const [year = "2026", monthPart = "01"] = month.split("-");
-    return {
-      date: new Date(Date.UTC(Number(year), Number(monthPart) - 1, 1)),
-      label: category,
-      category,
-      entry: "planned",
-      month,
-      amount: planned,
-    };
+    return { date: new Date(Date.UTC(Number(year), Number(monthPart) - 1, 1)), label: category, category, entry: "planned", month, amount: planned };
   });
 }
 
@@ -86,25 +67,15 @@ export async function loadDemoBundle(baseUrl: string): Promise<Table> {
   ]);
   const actual = derive(parseCsv("fy2026.csv", actualText));
   const plan = parseCsv("plan-fy2026.csv", planText);
-  return {
-    ...actual,
-    rows: [...actual.rows, ...planRows(plan)],
-    rejected: [...actual.rejected, ...plan.rejected],
-  };
+  return { ...actual, rows: [...actual.rows, ...planRows(plan)], rejected: [...actual.rejected, ...plan.rejected] };
 }
 
-export const actualRows = (table: Table): Row[] =>
-  table.rows.filter((row) => row["entry"] !== "planned");
-
-export const plannedRows = (table: Table): Row[] =>
-  table.rows.filter((row) => row["entry"] === "planned");
-
+export const actualRows = (table: Table): Row[] => table.rows.filter((row) => row["entry"] !== "planned");
+export const plannedRows = (table: Table): Row[] => table.rows.filter((row) => row["entry"] === "planned");
 export const sumAmount = (rows: readonly Row[]): number =>
   rows.reduce((sum, row) => sum + (typeof row["amount"] === "number" ? row["amount"] : 0), 0);
-
 export const expensesOf = (rows: readonly Row[]): number =>
   sumAmount(rows.filter((row) => Number(row["amount"] ?? 0) < 0)) * -1;
-
 export const incomeOf = (rows: readonly Row[]): number =>
   sumAmount(rows.filter((row) => Number(row["amount"] ?? 0) > 0));
 
@@ -128,8 +99,6 @@ export function byCategory(table: Table): CategoryTotal[] {
     planned.set(key, (planned.get(key) ?? 0) + Number(row["amount"] ?? 0));
   }
   return CATEGORIES.map((category) => ({
-    category,
-    actual: actual.get(category) ?? 0,
-    planned: planned.get(category) ?? 0,
+    category, actual: actual.get(category) ?? 0, planned: planned.get(category) ?? 0,
   })).filter((entry) => entry.actual > 0 || entry.planned > 0);
 }

@@ -89,13 +89,15 @@ export {
   buildFragment,
   decodeLink,
   decodePrivateLink,
+  decodePrivateLinkWithPassphrase,
   decodePublicLink,
   encodeLink,
   encodePrivateLink,
+  encodePrivateLinkWithPassphrase,
   encodePublicLink,
   readFragment,
   shareError,
 } from "./share/link.js";
 export { decodeBase64Url, encodeBase64Url } from "./share/base64.js";
 export { deflateRaw, inflateRaw } from "./share/compress.js";
-export { decrypt, encrypt, generateKey } from "./share/crypto.js";
+export { decrypt, deriveKeyFromPassphrase, encrypt, generateKey, newSalt } from "./share/crypto.js";

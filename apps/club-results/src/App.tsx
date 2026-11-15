@@ -1,12 +1,9 @@
-import type { Table } from "@bare-bones/core";
-import { createViewState, decodeText, findImporter } from "@bare-bones/core";
-import type { ShareMode } from "@bare-bones/core";
+import type { ShareMode, Table } from "@bare-bones/core"; import { createViewState } from "@bare-bones/core";
 import type { ShareCardProps } from "@bare-bones/ui";
-import { Chart, ShareCard } from "@bare-bones/ui";
+import { Chart, LinkScreen, ShareCard, useIncomingLink, useImportWorker } from "@bare-bones/ui";
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode, RefObject } from "react";
-import { loadDemoSeason, nextFixture, standings, TEAMS } from "./data.js";
-import type { Outcome, Standing } from "./data.js";
+import { derive, loadDemoSeason, nextFixture, standings, TEAMS } from "./data.js"; import type { Outcome, Standing } from "./data.js";
 import { explorerConfig } from "./explorer.config.js";
 import "./floodlight.css";
 
@@ -46,9 +43,9 @@ function Empty({ fallback, canvasRef, onLoad, onFile }: { fallback: boolean; can
   return (
     <Shell fallback={fallback} canvasRef={canvasRef}>
       <div className="fl-empty">
-        <span className="fl-k">Under the floodlights</span>
+        <span className="fl-k">Riverside Six · Season 2026</span>
         <h1 className="fl-title">No match <em>played yet.</em></h1>
-        <p className="fl-pitch">Drop a results CSV and the league table lights up. Everything stays in this browser.</p>
+        <p className="fl-pitch">Drop the results sheet and the league table, team pages and form streaks build themselves.</p>
         <div className="fl-empty-actions">
           <button type="button" className="fl-button" onClick={onLoad}>Load demo season</button>
           <label className="fl-file">Drop results.csv<input type="file" accept=".csv,text/csv" onChange={(e) => { const file = e.target.files?.[0]; if (file) onFile(file); }} /></label>
@@ -63,8 +60,7 @@ function LeagueTable({ rows, selected, onSelect, next }: { rows: readonly Standi
     <section className="fl-card">
       <div className="fl-head"><span className="fl-k">Riverside Six</span><span className="fl-chip">Week {next !== null ? next.week - 1 : rows[0]?.played ?? 0}</span></div>
       <h2 className="fl-h2">League <span>table</span></h2>
-      <div className="fl-lh"><span>#</span><span>Team</span><span>P</span><span>GD</span><span>PTS</span></div>
-      <div className="fl-lt">
+      <div className="fl-lh"><span>#</span><span>Team</span><span>P</span><span>GD</span><span>PTS</span></div><div className="fl-lt">
         {rows.map((row, index) => (
           <button type="button" key={row.team} className={`fl-r${index === 0 ? " fl-leader" : ""}${row.team === selected ? " fl-on" : ""}`} onClick={() => onSelect(row.team)}>
             <span className="fl-pos">{index + 1}</span>
@@ -97,13 +93,10 @@ function TeamPage({ standing }: { standing: Standing }) {
       </div>
       <div className="fl-pts"><b>{standing.points}</b><span className="fl-k">points<br />{gd} goal diff.</span></div>
       <div className="fl-stats">
-        <div><b>{standing.won}</b><span>WON</span></div>
-        <div><b>{standing.drawn}</b><span>DRAWN</span></div>
-        <div><b>{standing.lost}</b><span>LOST</span></div>
-        <div><b>{gd}</b><span>GD</span></div>
+        <div><b>{standing.won}</b><span>WON</span></div><div><b>{standing.drawn}</b><span>DRAWN</span></div>
+        <div><b>{standing.lost}</b><span>LOST</span></div><div><b>{gd}</b><span>GD</span></div>
       </div>
-      <div className="fl-form">
-        <span className="fl-k">Form streak · last 5</span>
+      <div className="fl-form"><span className="fl-k">Form streak · last 5</span>
         <Chart kind="form" title="Form" points={[]} results={standing.form.map((o) => FORM[o])} width={260} height={44} />
         <Chart kind="line" title="Cumulative points" points={curve} width={260} height={70} />
       </div>
@@ -120,23 +113,16 @@ function TeamPage({ standing }: { standing: Standing }) {
   );
 }
 
-function ShareColumn({ payload }: { payload: ShareCardProps["payload"] }) {
-  return (
-    <section className="fl-card">
-      <div className="fl-head"><span className="fl-k">Team talk</span><span className="fl-chip">18 members</span></div>
-      <h2 className="fl-h2">Shared <span>by link</span></h2>
-      <p className="fl-pitch">The coach posts the same link every week. It opens this exact view — no account, no app install.</p>
-      <ShareCard title="League table" payload={payload} defaultMode={"public" as ShareMode} />
-      <p className="fl-note">The link only holds the compressed view state. Nothing is uploaded anywhere.</p>
-    </section>
-  );
-}
-
 function App() {
   const [table, setTable] = useState<Table | null>(null);
   const [selected, setSelected] = useState<string>(TEAMS[0].name);
   const [fallback, setFallback] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const link = useIncomingLink();
+  const importer = useImportWorker({
+    createWorker: () => new Worker(new URL("./worker.ts", import.meta.url), { type: "module" }),
+    onComplete: (outcome) => setTable(derive(outcome.table)),
+  });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -156,15 +142,14 @@ function App() {
   const load = (): void => { loadDemoSeason("./").then(setTable).catch(() => setFallback(true)); };
   useEffect(() => {
     if (new URLSearchParams(window.location.search).has("demo")) load();
-  }, []);
-  const importFile = async (file: File): Promise<void> => {
-    const decoded = decodeText(new Uint8Array(await file.arrayBuffer()));
-    const importer = findImporter(explorerConfig, file.name);
-    if (importer === undefined) return;
-    setTable(importer.parse({ fileName: file.name, text: decoded.text }).table);
-  };
+    const data = link.payload?.data;
+    if (link.status === "ready" && data !== null && data !== undefined) setTable(data);
+  }, [link.status, link.payload]);
 
-  if (table === null) return <Empty fallback={fallback} canvasRef={canvasRef} onLoad={load} onFile={(file) => void importFile(file)} />;
+  if (table === null && (link.status === "invalid" || link.status === "locked")) {
+    return <LinkScreen status={link.status} token={link.token} error={link.error} backHref="../" onUnlock={link.unlock} onEmpty={link.dismiss} />;
+  }
+  if (table === null) return <Empty fallback={fallback} canvasRef={canvasRef} onLoad={load} onFile={importer.start} />;
 
   const rows = standings(table);
   const standing = rows.find((row) => row.team === selected) ?? rows[0];
@@ -172,10 +157,22 @@ function App() {
 
   return (
     <Shell fallback={fallback} canvasRef={canvasRef}>
+      {link.blocked ? (
+        <div className="fl-banner" role="status">
+          This link was changed or cut short. Nothing was loaded or replaced.
+          <button type="button" onClick={link.dismiss}>Dismiss</button>
+        </div>
+      ) : null}
       <main className="fl-cols">
         <LeagueTable rows={rows} selected={selected} onSelect={setSelected} next={nextFixture(table)} />
         {standing === undefined ? null : <TeamPage standing={standing} />}
-        <ShareColumn payload={payload} />
+        <section className="fl-card">
+          <div className="fl-head"><span className="fl-k">Team talk</span><span className="fl-chip">18 members</span></div>
+          <h2 className="fl-h2">Shared <span>by link</span></h2>
+          <p className="fl-pitch">The coach posts the same link every week. It opens this exact view — no account, no app install.</p>
+          <ShareCard title="League table" payload={payload} defaultMode={"public" as ShareMode} />
+          <p className="fl-note">The link only holds the compressed view state. Nothing is uploaded anywhere.</p>
+        </section>
       </main>
     </Shell>
   );

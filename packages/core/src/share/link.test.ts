@@ -4,9 +4,11 @@ import {
   buildFragment,
   decodeLink,
   decodePrivateLink,
+  decodePrivateLinkWithPassphrase,
   decodePublicLink,
   encodeLink,
   encodePrivateLink,
+  encodePrivateLinkWithPassphrase,
   encodePublicLink,
   readFragment,
 } from "./link.js";
@@ -106,6 +108,42 @@ describe("private link", () => {
     const parts = token.split(".");
     const tampered = `${parts[0]}.${parts[1]}.${parts[2]}.${encodeBase64Url(new Uint8Array(32))}`;
     await expect(decodePrivateLink(tampered)).rejects.toThrow();
+  });
+});
+
+describe("passphrase link", () => {
+  const PASSPHRASE = "correct horse battery staple";
+
+  it("round-trips a payload and never carries the key", async () => {
+    const token = await encodePrivateLinkWithPassphrase(payloadWithTerm("hidden"), PASSPHRASE);
+    expect(token.split(".")[1]).toBe("k");
+    expect(token).not.toContain("hidden");
+    const decoded = await decodePrivateLinkWithPassphrase(token, PASSPHRASE);
+    expect(decoded.mode).toBe("private");
+    expect(decoded.payload.state.query.filters[0]).toMatchObject({ term: "hidden" });
+    expect(decoded.payload.data?.rows[0]).toEqual({ amount: 12.5 });
+  });
+
+  it("fails with the fallback error on a wrong passphrase", async () => {
+    const token = await encodePrivateLinkWithPassphrase(payloadWithTerm("hidden"), PASSPHRASE);
+    await expect(decodePrivateLinkWithPassphrase(token, "wrong")).rejects.toMatchObject({
+      code: "invalid-share",
+    });
+  });
+
+  it("asks for a passphrase when opened through decodeLink", async () => {
+    const token = await encodePrivateLinkWithPassphrase(payloadWithTerm("hidden"), PASSPHRASE);
+    await expect(decodeLink(buildFragment(token))).rejects.toMatchObject({
+      code: "invalid-share",
+      detail: "passphrase-required",
+    });
+  });
+
+  it("rejects a truncated token with the fallback error", async () => {
+    const token = await encodePrivateLinkWithPassphrase(payloadWithTerm("hidden"), PASSPHRASE);
+    await expect(decodePrivateLinkWithPassphrase(token.slice(0, -4), PASSPHRASE)).rejects.toMatchObject({
+      code: "invalid-share",
+    });
   });
 });
 

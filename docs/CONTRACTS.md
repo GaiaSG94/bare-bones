@@ -41,9 +41,15 @@ CI enforces this with the "public API only" guard (`tools/guard.mjs`).
 ### Share (`src/share/`)
 
 `encodeLink`, `decodeLink`, `encodePublicLink`, `decodePublicLink`,
-`encodePrivateLink`, `decodePrivateLink`, `buildFragment`, `readFragment`,
+`encodePrivateLink`, `decodePrivateLink`, `encodePrivateLinkWithPassphrase`,
+`decodePrivateLinkWithPassphrase`, `buildFragment`, `readFragment`,
 `shareError`, `encodeBase64Url`, `decodeBase64Url`, `deflateRaw`,
-`inflateRaw`, `encrypt`, `decrypt`, `generateKey`.
+`inflateRaw`, `encrypt`, `decrypt`, `generateKey`, `newSalt`,
+`deriveKeyFromPassphrase`.
+
+`decodeLink` throws `BareBonesError` (`invalid-share`, detail
+`passphrase-required`) on a `v1.k.` token: the caller collects the
+passphrase and calls `decodePrivateLinkWithPassphrase`.
 
 ### Export (`src/export/`)
 
@@ -87,7 +93,16 @@ Zod schemas for every boundary payload: `tableSchema`, `viewStateSchema`,
 
 ### Share
 
-`ShareCard`, `useShareLink`, `useHashToken`.
+`ShareCard` (supports an optional `passphrase` third mode),
+`useShareLink`, `useHashToken`.
+
+### States (V2: empty, importing, shared link)
+
+`EmptyState`, `ImportScreen`, `ImportProgress`, `ImportResult`,
+`LinkScreen`, `LinkFallback`, `PassphrasePrompt`, `useImportWorker`,
+`useIncomingLink`, `decodeShareToken`, and the pure helpers
+`countRows`, `headerOf`, `rawCells`, `faultyIndices`, `rejectedCsv`,
+`downloadText`, `REJECT_LABELS`.
 
 ### Explorer
 

@@ -28,10 +28,8 @@ export const MATCH_COLUMNS: readonly Column[] = [
   { id: "away-outcome", label: "Away outcome", type: "outcome", format: { kind: "category", levels: ["W", "D", "L"] } },
 ];
 
-export const pointsOf = (forGoals: number, againstGoals: number): number =>
-  forGoals > againstGoals ? 3 : forGoals === againstGoals ? 1 : 0;
-export const outcomeOf = (forGoals: number, againstGoals: number): Outcome =>
-  forGoals > againstGoals ? "W" : forGoals === againstGoals ? "D" : "L";
+export const pointsOf = (f: number, a: number): number => (f > a ? 3 : f === a ? 1 : 0);
+export const outcomeOf = (f: number, a: number): Outcome => (f > a ? "W" : f === a ? "D" : "L");
 
 /** Derivation: per-match outcome letters for both sides. */
 export function derive(table: Table): Table {
@@ -92,12 +90,7 @@ export function standings(table: Table): Standing[] {
   return [...map.values()].sort(compareStandings);
 }
 
-export interface Fixture {
-  readonly date: string;
-  readonly week: number;
-  readonly home: string;
-  readonly away: string;
-}
+export interface Fixture { readonly date: string; readonly week: number; readonly home: string; readonly away: string }
 
 /** First upcoming match, derived from fixture rows (rows without goals). */
 export function nextFixture(table: Table): Fixture | null {

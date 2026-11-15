@@ -34,7 +34,6 @@ function buildPitch(scene: THREE.Scene): void {
     goal.position.set(PX + k * (PL / 2 - 1), 0, PZ); scene.add(goal);
   });
 }
-
 function buildStand(scene: THREE.Scene, length: number, rows: number, at: readonly [number, number, number], rotY: number): void {
   const concrete = new THREE.MeshStandardMaterial({ color: 0x23272f, roughness: 0.95 });
   const seats = new THREE.MeshStandardMaterial({ color: 0x173757, roughness: 0.7 });
@@ -133,8 +132,7 @@ function buildLedBoard(scene: THREE.Scene): void {
       g.fillStyle = "#7DD3FC"; g.fillText("RIVERSIDE SIX", x, 34);
       g.fillStyle = "rgba(238,242,247,.75)"; g.fillText("SEASON 2026", x + 420, 34);
     }
-  });
-  const board = new THREE.Mesh(new THREE.BoxGeometry(PL + 10, 0.9, 0.2), new THREE.MeshBasicMaterial({ map: led, toneMapped: false }));
+  });  const board = new THREE.Mesh(new THREE.BoxGeometry(PL + 10, 0.9, 0.2), new THREE.MeshBasicMaterial({ map: led, toneMapped: false }));
   board.position.set(PX, 0.45, PZ - PW / 2 - 5); scene.add(board);
 }
 
@@ -174,8 +172,7 @@ export function startStadium(canvas: HTMLCanvasElement): () => void {
     dust.forEach((p, i) => { p.position.y = Math.sin(t * 0.3 + i) * 0.3; });
     composer.render(); document.body.dataset.ready = "1"; raf = requestAnimationFrame(frame);
   };
-  frame();
-  return () => {
+  frame();  return () => {
     cancelAnimationFrame(raf);
     window.removeEventListener("resize", onResize); window.removeEventListener("pointermove", onPointer); renderer.dispose();
   };

@@ -1,5 +1,18 @@
 # STATUS — kiroween-bare-bones
 
+## Session 2026-11-15 (opencode), étape 5 bis
+
+- Phase : build (étapes 1-5 bis/9).
+- Étape 5 bis FAITE — les états de la V2 (spec `.kiro/specs/states-v2/`) :
+  - **A (budget vide)** : zone de dépôt, colonnes attendues (`date YYYY-MM-DD / label / category / amount −12.50 / + plan.csv`), ligne « Your data stays here… », 6 sphères fantômes + légende, carte « Just looking? / Load demo data », chip « No data yet », « ← Bare Bones » ;
+  - **B (import)** : branché sur le **vrai Worker** (`attachWorker`, `src/worker.ts` par app) : 3 étapes réelles (Columns recognised → Checking every row · in a background worker → Building the explorer), compteurs réels (lignes comptées, taille du fichier), puis « Ready. N rows in your explorer. » avec pills « N kept / M set aside », lignes rejetées avec **la partie fautive surlignée**, « Download rejected rows » (vrai CSV) et « Open the explorer » ; bouton Cancel ;
+  - **C (lien #bb=)** : lien altéré → panneau de repli (« This link was changed or cut short. », « Nothing was loaded », « ← Bare Bones ») et **rien n'est chargé ni remplacé** (bannière non destructive si des données sont déjà ouvertes) ; lien privé à **phrase de passe** (`v1.k.`, PBKDF2 100k, la clé ne voyage jamais) : saisie + « That passphrase doesn't open this link. » si mauvaise, ouverture si bonne ; la ShareCard du budget gagne le mode « Passphrase » ; le club applique le même repli ;
+  - **D (club vide)** : « Riverside Six · Season 2026 », « No match played yet. », « Load demo season », « Drop results.csv », « ← Bare Bones ».
+- **Transparence core/ui** : changement **additif uniquement** (API publique gelée) — core : lien à phrase de passe (+58 lignes, tests dédiés) ; ui : dossier `states/` générique (écrans + machine d'import + styles à variables) (+≈770 lignes) ; **les apps ne forkent jamais core/ui** (garde « public API only ») et restent dans leurs plafonds : budget 598/600, club 600/600.
+- Playwright (`@playwright/test` 1.65.1, `pnpm run e2e`) : **11 tests verts** (34 s) couvrant A, B (3 étapes, compteurs, download CSV), C (altéré budget+club, non-destruction des données, phrase de passe fausse/bonne), D ; job `e2e` ajouté à la CI (parallèle au job check, < 5 min).
+- Vérifications : 77 tests unitaires verts, typecheck ×5 packages OK, budgets et gardes OK, builds `/budget/` et `/club/` OK ; états vérifiés au DOM (textes exacts de la planche, zéro erreur console).
+- Reste : site (étape 6), gardes diff core/ui + Pages (étape 7), CLI/power/doctor (étape 8), livrables Devpost (étape 9).
+
 ## Session 2026-11-15 (opencode), étape 5
 
 - Phase : build (étapes 1-5/9).

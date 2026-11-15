@@ -28,6 +28,38 @@ export { extent, paddedExtent, scaleLinear, ticks } from "./charts/scales.js";
 export { ShareCard } from "./share/ShareCard.js";
 export { useHashToken, useShareLink } from "./share/useShareLink.js";
 
+export {
+  countRows,
+  downloadText,
+  faultyIndices,
+  headerOf,
+  rawCells,
+  REJECT_LABELS,
+  rejectedCsv,
+} from "./states/importMachine.js";
+export type { Delimiter as CsvDelimiter } from "./states/importMachine.js";
+export { ImportProgress } from "./states/ImportProgress.js";
+export type { ImportStep, ImportProgressProps } from "./states/ImportProgress.js";
+export { ImportResult } from "./states/ImportResult.js";
+export type { ImportResultProps } from "./states/ImportResult.js";
+export { LinkFallback, PassphrasePrompt } from "./states/LinkStates.js";
+export type { LinkFallbackProps, PassphrasePromptProps } from "./states/LinkStates.js";
+export { EmptyState } from "./states/EmptyState.js";
+export type { EmptyStateProps, ExpectedColumn } from "./states/EmptyState.js";
+export { ImportScreen } from "./states/ImportScreen.js";
+export type { ImportScreenProps } from "./states/ImportScreen.js";
+export { LinkScreen } from "./states/LinkScreen.js";
+export type { LinkScreenProps } from "./states/LinkScreen.js";
+export { decodeShareToken, useIncomingLink } from "./states/useIncomingLink.js";
+export type { IncomingLinkState } from "./states/useIncomingLink.js";
+export { useImportWorker } from "./states/useImportWorker.js";
+export type {
+  ImportPhase,
+  ImportState,
+  ImportWorkerOptions,
+  UseImportWorker,
+} from "./states/useImportWorker.js";
+
 export { Explorer } from "./explorer/Explorer.js";
 export { DropZone } from "./explorer/DropZone.js";
 export { MetricCards } from "./explorer/MetricCards.js";

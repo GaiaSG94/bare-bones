@@ -17,6 +17,38 @@ export function generateKey(): Uint8Array {
   return key;
 }
 
+const PBKDF2_ITERATIONS = 100_000;
+const SALT_LENGTH = 16;
+
+/**
+ * Derives an AES key material from a human passphrase (PBKDF2-SHA-256).
+ * The salt travels with the link; the passphrase never does.
+ */
+export function newSalt(): Uint8Array {
+  const salt = new Uint8Array(SALT_LENGTH);
+  globalThis.crypto.getRandomValues(salt);
+  return salt;
+}
+
+export async function deriveKeyFromPassphrase(
+  passphrase: string,
+  salt: Uint8Array,
+): Promise<Uint8Array> {
+  const material = await globalThis.crypto.subtle.importKey(
+    "raw",
+    asBufferSource(new TextEncoder().encode(passphrase)),
+    "PBKDF2",
+    false,
+    ["deriveBits"],
+  );
+  const bits = await globalThis.crypto.subtle.deriveBits(
+    { name: "PBKDF2", hash: "SHA-256", salt: asBufferSource(salt), iterations: PBKDF2_ITERATIONS },
+    material,
+    256,
+  );
+  return new Uint8Array(bits);
+}
+
 async function importKey(key: Uint8Array): Promise<CryptoKey> {
   return globalThis.crypto.subtle.importKey(
     "raw",

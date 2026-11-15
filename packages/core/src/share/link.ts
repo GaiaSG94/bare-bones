@@ -2,7 +2,15 @@ import type { SharePayload } from "../types.js";
 import { BareBonesError } from "../types.js";
 import { decodeBase64Url, encodeBase64Url } from "./base64.js";
 import { deflateRaw, inflateRaw } from "./compress.js";
-import { decrypt, encrypt, generateKey, parsePayload, serializePayload } from "./crypto.js";
+import {
+  decrypt,
+  deriveKeyFromPassphrase,
+  encrypt,
+  generateKey,
+  newSalt,
+  parsePayload,
+  serializePayload,
+} from "./crypto.js";
 import { sharePayloadSchema } from "../schema.js";
 
 export const SHARE_PREFIX = "bb=";
@@ -87,6 +95,46 @@ export async function decodePrivateLink(token: string): Promise<DecodedShare> {
   }
 }
 
+/**
+ * Passphrase link (`v1.k.`): the key is derived from the passphrase and
+ * never travels in the fragment. The salt must, so the same passphrase
+ * derives the same key.
+ */
+export async function encodePrivateLinkWithPassphrase(
+  payload: SharePayload,
+  passphrase: string,
+): Promise<string> {
+  const salt = newSalt();
+  const key = await deriveKeyFromPassphrase(passphrase, salt);
+  const blob = await encrypt(serializePayload(payload), key);
+  const combined = new Uint8Array(blob.iv.length + blob.ciphertext.length);
+  combined.set(blob.iv, 0);
+  combined.set(blob.ciphertext, blob.iv.length);
+  return `${SHARE_VERSION}.k.${encodeBase64Url(salt)}.${encodeBase64Url(combined)}`;
+}
+
+export async function decodePrivateLinkWithPassphrase(
+  token: string,
+  passphrase: string,
+): Promise<DecodedShare> {
+  try {
+    const parts = token.split(".");
+    if (parts.length !== 4 || parts[0] !== SHARE_VERSION || parts[1] !== "k") {
+      throw shareError("unexpected passphrase token shape");
+    }
+    const salt = decodeBase64Url(parts[2] ?? "");
+    const combined = decodeBase64Url(parts[3] ?? "");
+    if (combined.length <= 12) {
+      throw shareError("ciphertext too short");
+    }
+    const key = await deriveKeyFromPassphrase(passphrase, salt);
+    const text = await decrypt({ iv: combined.subarray(0, 12), ciphertext: combined.subarray(12) }, key);
+    return { mode: "private", payload: parseChecked(text), key };
+  } catch (error) {
+    throw asShareError(error);
+  }
+}
+
 function asShareError(error: unknown): BareBonesError {
   if (error instanceof BareBonesError) return error;
   const detail = error instanceof Error ? error.message : String(error);
@@ -116,6 +164,9 @@ export async function decodeLink(hash: string): Promise<DecodedShare> {
   const token = readFragment(hash);
   if (token === null || token === "") {
     throw shareError("no share token in fragment");
+  }
+  if (token.includes(".k.")) {
+    throw shareError("passphrase-required");
   }
   return token.includes(".s.") ? decodePrivateLink(token) : decodePublicLink(token);
 }
