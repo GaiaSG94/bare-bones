@@ -16,8 +16,6 @@
   - `tools/doctor.mjs` (`pnpm doctor`) : node, pnpm, liens workspace, manifeste gel├®, gardes, budgets, builds.
 - **├ëtape 9 FAITE ÔÇö livrables Devpost (EN)** : `README.md` (pitch, URLs en ligne, ┬½ Two apps, one skeleton ┬╗ avec diff vide prouv├®, `pnpm i && pnpm dev`, chiffres de metrics.json), `KIRO.md` (specs EARS, steering, hooks, PBT avec les 2 vrais bugs attrap├®s, power, MCP: absent assum├®, IDE vs CLI), `DEVPOST.md`, `VIDEO.md` (script < 3 min, pas de musique ni marque tierce), checklist ┬º 12 relue.
 - V├®rifications : 77 tests verts, typecheck ├ù5 OK, budgets lignes+gzip OK, gardes OK (66 fichiers gel├®s), builds des 4 sites OK, **19/19 E2E verts**, doctor OK.
-- Pages : le premier run du workflow `pages.yml` d├®ploie ; URLs ├á v├®rifier en 200 apr├¿s le run.
-- Reste : v├®rifier les 4 URLs post-d├®ploiement + Gaia pose `social-preview-1280x640.png` dans Settings ÔåÆ Social preview.
 
 ## Session 2026-11-15 (opencode), ├®tape 5 bis
 
@@ -93,3 +91,5 @@
   - doublons `bare-bones-planches/` supprim├®s.
 - Gaia soumet LabKit **et** Bare Bones : le conflit Skeleton Crew est lev├®.
 - Suite c├┤t├® code : `PROMPT-BARE-BONES-SUITE.md` (racine `2026-12-04-kiroween/`), ├®tapes 5 ├á 9 pour opencode.
+- Pages : **déployé et vérifié** — https://gaiasg94.github.io/bare-bones/ , `/budget/` , `/club/` , `/skeleton/` (les 4 en **200**, contrôlés au navigateur : accueil avec 3D active et faits réels ; budget avec la démo chargée, solde −€3 113 ; club avec 6 équipes et le canvas actif ; squelette avec son drop zone) ; topics GitHub ajoutés, description de dépôt et licence MIT déjà visibles.
+- Reste : Gaia pose `social-preview-1280x640.png` dans Settings → Social preview ; demander les **crédits Kiro avant le 1er décembre 12:00 PT** ; mettre la vidéo sur YouTube (public) ; inscription Devpost puis soumission avant le 4 décembre 14:00 PT.
