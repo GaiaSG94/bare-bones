@@ -1,5 +1,5 @@
 {
-  "measuredAt": "2026-11-15T14:11:58.252Z",
+  "measuredAt": "2026-11-15T16:05:50.106Z",
   "packages": {
     "core": {
       "lines": 1578,
@@ -25,8 +25,8 @@
     }
   },
   "tests": {
-    "files": 12,
-    "cases": 77,
+    "files": 13,
+    "cases": 78,
     "pbtProperties": 16,
     "pbtSeed": 20261111
   },
@@ -36,7 +36,7 @@
     "react-dom"
   ],
   "siteSizes": {
-    "home": 10478,
+    "home": 10480,
     "budget": 119700,
     "club": 114445,
     "skeleton": null,
@@ -48,11 +48,11 @@
   },
   "demo": {
     "budget": {
-      "rows": 99,
+      "rows": 98,
       "rejected": 2,
-      "income": 9956,
+      "income": 12361,
       "expenses": 15474,
-      "balance": -5518
+      "balance": -3113
     },
     "club": {
       "leader": "Castors",
@@ -60,5 +60,5 @@
       "nextWeek": 9
     }
   },
-  "ciDurationSeconds": 72
+  "ciDurationSeconds": 109
 }

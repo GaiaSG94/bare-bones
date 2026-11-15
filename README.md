@@ -61,10 +61,10 @@ by `tools/metrics.mjs`:
 
 | | |
 | --- | --- |
-| Tests | **77** in 12 files, all green |
+| Tests | **78** in 13 files, all green |
 | Property-based checks (fast-check, seed `20261111`) | **16** |
-| Lines, core / ui / skeleton | **1 578** / **2 595** / **70** |
-| Lines, budget app / club app | **598** / **600** (ceiling 600) |
+| Lines, core / ui / skeleton | **1,578** / **2,595** / **70** |
+| Lines, budget app / club app | **598** / **600** (CI gate, ceiling 600 each) |
 | Gzip, home page | **10.2 kB** (3D scene 126.3 kB, lazy, measured apart) |
 | Gzip, budget app | **116.9 kB** |
 | Gzip, club app | **111.7 kB** (3D stadium 122.1 kB, lazy) |
@@ -72,9 +72,7 @@ by `tools/metrics.mjs`:
 | Runtime dependencies | **3** — `zod`, `react`, `react-dom` (`three` only for the club's stadium) |
 | CI | **72 s** (lint, typecheck, tests, budgets, guards, Playwright, Pages) |
 
-Demo data, recomputed from the shipped CSVs: budget **99 rows, 2 set aside**,
-income **€9 956**, expenses **€15 474**, balance **−€5 518**; league leader
-**Castors, 22 pts** after week 8.
+Demo data, recomputed from the shipped CSVs: budget **98 rows, 2 set aside**, income **€12,361**, expenses **€15,474**, balance **−€3,113**; league leader **Castors, 22 pts**, next match in week 9.
 
 ## Install
 

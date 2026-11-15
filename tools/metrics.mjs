@@ -61,6 +61,62 @@ function csvRows(path) {
   return readFileSync(path, "utf8").split(/\r?\n/).filter((l) => l.trim() !== "").slice(1);
 }
 
+/**
+ * Same number rules as core's parseNumber: spaces are thousands
+ * separators; with both separators the rightmost one is the decimal mark;
+ * a single separator followed by three digits groups thousands.
+ */
+function parseAmount(raw) {
+  const text = raw.replace(/[\u20ac\u00a3\u0024\u00a5]/g, "").replace(/[\u0020\u00a0\u202f\u2009]/g, "").trim();
+  if (text === "" || text === "-" || !/^[+-]?[\d.,]+$/.test(text)) return null;
+  const parenthesised = /^\(.*\)$/.test(text);
+  let body = parenthesised ? text.slice(1, -1) : text;
+  let negative = parenthesised;
+  if (body.startsWith("-")) {
+    negative = true;
+    body = body.slice(1);
+  } else if (body.startsWith("+")) {
+    body = body.slice(1);
+  }
+  const commas = (body.match(/,/g) ?? []).length;
+  const dots = (body.match(/\./g) ?? []).length;
+  let integer = body;
+  let decimals = "";
+  if (commas > 0 && dots > 0) {
+    const decimalSeparator = body.lastIndexOf(",") > body.lastIndexOf(".") ? "," : ".";
+    const parts = body.split(decimalSeparator);
+    decimals = parts.pop() ?? "";
+    integer = parts.join("").replace(/[.,]/g, "");
+  } else if (commas > 1 || dots > 1) {
+    integer = body.replace(/[.,]/g, "");
+  } else if (commas === 1 || dots === 1) {
+    const separator = commas === 1 ? "," : ".";
+    const [head = "", tail = ""] = body.split(separator);
+    if (tail.length === 3) {
+      integer = `${head}${tail}`;
+      decimals = "";
+    } else {
+      integer = head;
+      decimals = tail;
+    }
+  }
+  if (integer === "" && decimals === "") return null;
+  const value = Number(`${integer || "0"}.${decimals || "0"}`);
+  if (!Number.isFinite(value)) return null;
+  return negative ? -value : value;
+}
+
+/** A row is kept only when its date and its amount are valid, like in the app. */
+function isRealDate(text) {
+  const trimmed = text.trim();
+  if (trimmed === "") return true; // an empty cell is null, not an error
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(trimmed);
+  if (match === null) return false;
+  const [year, month, day] = [Number(match[1]), Number(match[2]), Number(match[3])];
+  const date = new Date(Date.UTC(year, month - 1, day));
+  return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
+}
+
 function budgetDemo() {
   const rows = csvRows(join(root, "apps/nonprofit-budget/public/data/fy2026.csv"));
   let income = 0;
@@ -69,8 +125,10 @@ function budgetDemo() {
   let rejected = 0;
   for (const row of rows) {
     const cells = row.split(";");
-    const value = Number((cells[2] ?? "").replace(",", "."));
-    if (Number.isNaN(value) || cells.length < 3) {
+    if (cells.every((cell) => cell.trim() === "")) continue; // a blank line is not a row
+    const raw = (cells[2] ?? "").trim();
+    const value = raw === "" ? 0 : parseAmount(raw);
+    if (value === null || !isRealDate(cells[0] ?? "")) {
       rejected += 1;
       continue;
     }
