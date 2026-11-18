@@ -98,3 +98,12 @@
   - la démo budget affiche un solde de −€3 113, alors que la maquette et le pitch racontent « +€X left » ;
   - le reste de ce fichier contient des accents mal encodés (`├®`), à corriger par opencode ;
   - la vidéo n'est pas faite : `VIDEO.md` existe, il reste le tournage et le montage.
+- **2026-11-18 13:50** · Kiro a fait les finitions (PR 2, fusionnée, CI et Pages verts) :
+  - travail fait par **Kiro CLI 3.3.0**, piloté par Claude, en suivant la nouvelle spec `.kiro/specs/submission-polish/` (requirements, design, tasks), en deux passes ;
+  - `og:image` en URL absolue, l'image répond **200** en ligne ;
+  - solde de la démo budget : **+€3 819** (recettes €12 360, dépenses €8 541 sous le plan de €9 375) ;
+  - accents de STATUS.md réparés ;
+  - le hachage de la garde core/ui ne dépend plus des fins de ligne (`tools/hash-file.mjs`), le manifeste est inchangé ;
+  - revue Claude : un premier rafraîchissement du manifeste, fait sur des fichiers CRLF, a été annulé ; le test de l'image a été déplacé dans les tests e2e, car la CI lance les tests unitaires avant le build ;
+  - rushes de la session Kiro, hors git, dans `video-footage/` : `kiro-clean-take.mp4` (4 min 47, plan propre : Kiro IDE avec la liste des tâches et la CLI au travail), `kiro-clean-take-9.mp4` (35 s, fin du passage), `kiro-session.mp4` (29 min, premier passage brut, console rouge).
+- Reste : réécrire `KIRO.md` pour décrire honnêtement ce qui a été fait dans Kiro ; la vidéo ; la soumission par Gaia.
