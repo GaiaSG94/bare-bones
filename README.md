@@ -72,7 +72,7 @@ by `tools/metrics.mjs`:
 | Runtime dependencies | **3** — `zod`, `react`, `react-dom` (`three` only for the club's stadium) |
 | CI | **72 s** (lint, typecheck, tests, budgets, guards, Playwright, Pages) |
 
-Demo data, recomputed from the shipped CSVs: budget **98 rows, 2 set aside**, income **€12,361**, expenses **€15,474**, balance **−€3,113**; league leader **Castors, 22 pts**, next match in week 9.
+Demo data, recomputed from the shipped CSVs: budget **88 rows, 2 set aside**, income **€12,360**, expenses **€8,541**, balance **+€3,819**; league leader **Castors, 22 pts**, next match in week 9.
 
 ## Install
 

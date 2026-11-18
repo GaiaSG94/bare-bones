@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /** Writes tools/core-ui.sha256: the frozen manifest of core and ui sources. */
-import { createHash } from "node:crypto";
-import { readFileSync, readdirSync, statSync, writeFileSync, existsSync } from "node:fs";
+import { readdirSync, statSync, writeFileSync, existsSync } from "node:fs";
 import { join, dirname, resolve, relative } from "node:path";
 import { fileURLToPath } from "node:url";
+import { hashFile } from "./hash-file.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -20,7 +20,7 @@ function walk(dir) {
 }
 
 const lines = [...walk(join(root, "packages/core/src")), ...walk(join(root, "packages/ui/src"))]
-  .map((file) => `${relative(root, file).replace(/\\/g, "/")} ${createHash("sha256").update(readFileSync(file)).digest("hex")}`)
+  .map((file) => `${relative(root, file).replace(/\\/g, "/")} ${hashFile(file)}`)
   .sort();
 
 writeFileSync(join(root, "tools/core-ui.sha256"), `${lines.join("\n")}\n`);

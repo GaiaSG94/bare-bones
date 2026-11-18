@@ -1,5 +1,5 @@
 {
-  "measuredAt": "2026-11-15T16:05:50.106Z",
+  "measuredAt": "2026-11-18T12:27:30.021Z",
   "packages": {
     "core": {
       "lines": 1578,
@@ -36,9 +36,9 @@
     "react-dom"
   ],
   "siteSizes": {
-    "home": 10480,
-    "budget": 119700,
-    "club": 114445,
+    "home": 10495,
+    "budget": 119709,
+    "club": 114453,
     "skeleton": null,
     "note": "gzipped JS+CSS+HTML per site; lazy 3D chunks listed apart"
   },
@@ -48,11 +48,11 @@
   },
   "demo": {
     "budget": {
-      "rows": 98,
+      "rows": 88,
       "rejected": 2,
-      "income": 12361,
-      "expenses": 15474,
-      "balance": -3113
+      "income": 12360,
+      "expenses": 8541,
+      "balance": 3819
     },
     "club": {
       "leader": "Castors",
@@ -60,5 +60,5 @@
       "nextWeek": 9
     }
   },
-  "ciDurationSeconds": 109
+  "ciDurationSeconds": 131
 }

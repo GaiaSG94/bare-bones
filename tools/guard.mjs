@@ -8,10 +8,10 @@
  *  4. core/ui are frozen: their file hashes must match tools/core-ui.sha256,
  *     proving the apps never needed to change them.
  */
-import { createHash } from "node:crypto";
 import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
 import { join, dirname, resolve, relative } from "node:path";
 import { fileURLToPath } from "node:url";
+import { hashFile } from "./hash-file.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const INTERNAL_IMPORT = /@bare-bones\/(core|ui)\/(?!styles\.css|worker)/;
@@ -47,7 +47,7 @@ function checkSources() {
 function hashes(dir) {
   const entries = [];
   for (const file of listFiles(join(root, dir), /\.(ts|tsx|css)$/)) {
-    entries.push(`${relative(root, file).replace(/\\/g, "/")} ${createHash("sha256").update(readFileSync(file)).digest("hex")}`);
+    entries.push(`${relative(root, file).replace(/\\/g, "/")} ${hashFile(file)}`);
   }
   return entries.sort();
 }
@@ -55,7 +55,8 @@ function hashes(dir) {
 function checkFrozen() {
   const manifestPath = join(root, "tools/core-ui.sha256");
   if (!existsSync(manifestPath)) return ["tools/core-ui.sha256 is missing: run node tools/snapshot-core-ui.mjs"];
-  const expected = readFileSync(manifestPath, "utf8").split("\n").filter((line) => line.trim() !== "");
+  const raw = readFileSync(manifestPath, "utf8").replace(/\r\n/g, "\n");
+  const expected = raw.split("\n").filter((line) => line.trim() !== "");
   const actual = [...hashes("packages/core/src"), ...hashes("packages/ui/src")];
   const problems = [];
   const expectedMap = new Map(expected.map((line) => [line.split(" ")[0], line.split(" ")[1]]));
