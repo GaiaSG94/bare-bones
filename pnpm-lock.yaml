@@ -98,8 +98,6 @@ importers:
         specifier: ^3.2.4
         version: 3.2.7(@types/node@26.6.6)
 
-  create-bare-bones: {}
-
   packages/core:
     dependencies:
       zod:
