@@ -82,16 +82,19 @@
 
 ## Claude
 
-- **2026-11-14 13:40** ┬À phase : design V2 ┬À round 2.
+- **2026-11-14 13:40** · phase : design V2 · round 2.
 - Fait :
-  - planche des ├®tats (`design/reference/directions/states.html`, `png/states.png`) ;
+  - planche des états (`design/reference/directions/states.html`, `png/states.png`) ;
   - favicons (`design/assets/favicon-*.svg`) ;
   - images de partage (`design/assets/social-preview-1280x640.png`, `devpost-thumbnail-1500x1000.png`) ;
   - DESIGN.md en V2 avec changelog ;
-  - doublons `bare-bones-planches/` supprim├®s.
-- Gaia soumet LabKit **et** Bare Bones : le conflit Skeleton Crew est lev├®.
-- Suite c├┤t├® code : `PROMPT-BARE-BONES-SUITE.md` (racine `2026-12-04-kiroween/`), ├®tapes 5 ├á 9 pour opencode.
-- Pages : **déployé et vérifié** — https://gaiasg94.github.io/bare-bones/ , `/budget/` , `/club/` , `/skeleton/` (les 4 en **200**, contrôlés au navigateur : accueil avec 3D active et faits réels ; budget avec la démo chargée, solde −€3 113 ; club avec 6 équipes et le canvas actif ; squelette avec son drop zone) ; topics GitHub ajoutés, description de dépôt et licence MIT déjà visibles.
-- Reste : Gaia pose `social-preview-1280x640.png` dans Settings → Social preview ; demander les **crédits Kiro avant le 1er décembre 12:00 PT** ; mettre la vidéo sur YouTube (public) ; inscription Devpost puis soumission avant le 4 décembre 14:00 PT.
-- Pages : **déployé et vérifié** — https://gaiasg94.github.io/bare-bones/ , `/budget/` , `/club/` , `/skeleton/` (les 4 en **200**, contrôlés au navigateur : accueil avec 3D active et faits réels ; budget avec la démo chargée, solde −€3 113 ; club avec 6 équipes et le canvas actif ; squelette avec son drop zone) ; topics GitHub ajoutés, description de dépôt et licence MIT déjà visibles.
-- Reste : Gaia pose `social-preview-1280x640.png` dans Settings → Social preview ; demander les **crédits Kiro avant le 1er décembre 12:00 PT** ; mettre la vidéo sur YouTube (public) ; inscription Devpost puis soumission avant le 4 décembre 14:00 PT.
+  - doublons `bare-bones-planches/` supprimés.
+- Gaia soumet LabKit **et** Bare Bones : le conflit Skeleton Crew est levé.
+- Note d'opencode (2026-11-15), dédoublonnée : Pages déployé et vérifié (`/`, `/budget/`, `/club/`, `/skeleton/` en 200). Reste côté Gaia : image d'aperçu dans Settings → Social preview, crédits Kiro avant le 1er décembre 12:00 PT, vidéo publique sur YouTube, inscription Devpost et soumission avant le 4 décembre 14:00 PT.
+- **2026-11-18** · revue de fin de build :
+  - CI et Pages verts sur `7044c5d`, les 4 URLs répondent 200 ;
+  - `og:image` pointe vers `./social-preview-1280x640.png`, qui répond 404 : l'image n'est pas copiée dans le build ;
+  - **risque majeur** : `KIRO.md` décrit un build dans Kiro (IDE et boucle d'agent), alors que le code a été écrit par opencode. Il faut un vrai usage de Kiro, puis un `KIRO.md` exact ;
+  - la démo budget affiche un solde de −€3 113, alors que la maquette et le pitch racontent « +€X left » ;
+  - le reste de ce fichier contient des accents mal encodés (`├®`), à corriger par opencode ;
+  - la vidéo n'est pas faite : `VIDEO.md` existe, il reste le tournage et le montage.
