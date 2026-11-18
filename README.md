@@ -61,7 +61,7 @@ by `tools/metrics.mjs`:
 
 | | |
 | --- | --- |
-| Tests | **78** in 13 files, all green |
+| Tests | **79** in 14 files, all green |
 | Property-based checks (fast-check, seed `20261111`) | **16** |
 | Lines, core / ui / skeleton | **1,578** / **2,595** / **70** |
 | Lines, budget app / club app | **598** / **600** (CI gate, ceiling 600 each) |
@@ -72,7 +72,7 @@ by `tools/metrics.mjs`:
 | Runtime dependencies | **3** — `zod`, `react`, `react-dom` (`three` only for the club's stadium) |
 | CI | **72 s** (lint, typecheck, tests, budgets, guards, Playwright, Pages) |
 
-Demo data, recomputed from the shipped CSVs: budget **98 rows, 2 set aside**, income **€12,361**, expenses **€15,474**, balance **−€3,113**; league leader **Castors, 22 pts**, next match in week 9.
+Demo data, recomputed from the shipped CSVs: budget **88 rows, 2 set aside**, income **€12,360**, expenses **€8,541**, balance **+€3,819**; league leader **Castors, 22 pts**, next match in week 9.
 
 ## Install
 
