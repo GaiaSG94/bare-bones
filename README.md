@@ -61,7 +61,7 @@ by `tools/metrics.mjs`:
 
 | | |
 | --- | --- |
-| Tests | **79** in 14 files, all green |
+| Tests | **78** in 13 files, all green |
 | Property-based checks (fast-check, seed `20261111`) | **16** |
 | Lines, core / ui / skeleton | **1,578** / **2,595** / **70** |
 | Lines, budget app / club app | **598** / **600** (CI gate, ceiling 600 each) |

@@ -1,5 +1,5 @@
 {
-  "measuredAt": "2026-11-18T12:10:17.335Z",
+  "measuredAt": "2026-11-18T12:27:30.021Z",
   "packages": {
     "core": {
       "lines": 1578,
@@ -25,8 +25,8 @@
     }
   },
   "tests": {
-    "files": 14,
-    "cases": 79,
+    "files": 13,
+    "cases": 78,
     "pbtProperties": 16,
     "pbtSeed": 20261111
   },
