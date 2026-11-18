@@ -11,19 +11,19 @@
       metrics.
 - [x] Repair mojibake accents in STATUS.md (all sections except `## Claude`).
 - [x] Run `pnpm run check` and confirm everything is green.
-- [ ] Commit changes with clear messages on `kiro/finitions`.
+- [x] Commit changes with clear messages on `kiro/finitions`.
 
 ## Polish round 2 — CI and cross-platform fixes
 
-- [ ] Move the social-preview check into the Playwright e2e suite:
+- [x] Move the social-preview check into the Playwright e2e suite:
       add `tests/e2e/social-preview.spec.ts` (HTTP 200 for the image,
       `og:image` and `twitter:image` hold the absolute GitHub Pages URL)
       and delete `apps/nonprofit-budget/src/social-preview.test.ts`.
-- [ ] Make the core/ui manifest check line-ending-independent:
+- [x] Make the core/ui manifest check line-ending-independent:
       normalise `\r\n` → `\n` before hashing in both
       `tools/snapshot-core-ui.mjs` and `tools/guard.mjs`, sharing a helper
       so the logic is not duplicated.
-- [ ] Run `pnpm run check` and confirm it passes without regenerating
+- [x] Run `pnpm run check` and confirm it passes without regenerating
       `tools/core-ui.sha256`.
-- [ ] Run `pnpm run build` then `pnpm run e2e` and confirm everything is green.
-- [ ] Commit the changes.
+- [x] Run `pnpm run build` then `pnpm run e2e` and confirm everything is green.
+- [x] Commit the changes.
